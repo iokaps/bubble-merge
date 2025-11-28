@@ -14,11 +14,16 @@
   "dependencies": {
     "@kokimoki/app": "^2.0.0",
     "@kokimoki/shared": "^1.0.8",
+    "@types/matter-js": "^0.20.2",
+    "ion-sound": "^3.0.7",
     "lucide-react": "^0.554.0",
+    "matter-js": "^0.20.0",
     "motion": "^12.23.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",
+    "tone": "^15.1.22",
+    "use-sound": "^5.0.0",
     "valtio": "^2.1.5",
     "zod": "^3.25.67"
   },

@@ -4,14 +4,21 @@ import { useGlobalController } from '@/hooks/useGlobalController';
 import { generateLink } from '@/kit/generate-link';
 import { HostPresenterLayout } from '@/layouts/host-presenter';
 import { kmClient } from '@/services/km-client';
-import { SharedStateView } from '@/views/shared-state-view';
+import { setupGameActions } from '@/state/actions/setup-game-actions';
+import { globalStore } from '@/state/stores/global-store';
+import { ConnectionsView } from '@/views/connections-view';
+import { GameSetupView } from '@/views/game-setup-view';
+import { RoundResultsView } from '@/views/round-results-view';
 import { KmQrCode } from '@kokimoki/shared';
 import * as React from 'react';
+import { useSnapshot } from 'valtio';
 
 const App: React.FC = () => {
 	useGlobalController();
 	const { title } = config;
 	useDocumentTitle(title);
+
+	const { gamePhase, currentRound, bubbles } = useSnapshot(globalStore.proxy);
 
 	if (kmClient.clientContext.mode !== 'host') {
 		throw new Error('App host rendered in non-host mode');
@@ -26,10 +33,23 @@ const App: React.FC = () => {
 		playerCode: kmClient.clientContext.playerCode
 	});
 
+	const handleStartRound = async () => {
+		await setupGameActions.startRound();
+	};
+
+	const handleShowResults = async () => {
+		await setupGameActions.showResults();
+	};
+
 	return (
 		<HostPresenterLayout.Root>
 			<HostPresenterLayout.Header>
 				<div className="text-sm opacity-70">{config.hostLabel}</div>
+				{currentRound > 0 && (
+					<div className="text-sm font-medium">
+						{config.currentRoundLabel} {currentRound}
+					</div>
+				)}
 			</HostPresenterLayout.Header>
 
 			<HostPresenterLayout.Main>
@@ -59,7 +79,48 @@ const App: React.FC = () => {
 					</div>
 				</div>
 
-				<SharedStateView />
+				{/* Game Controls */}
+				{gamePhase === 'idle' || gamePhase === 'setup' ? (
+					<>
+						<GameSetupView />
+						{bubbles.length > 0 && (
+							<button
+								onClick={handleStartRound}
+								className="w-full max-w-2xl rounded-lg bg-green-500 px-4 py-3 font-medium text-white hover:bg-green-600"
+							>
+								{config.startRoundButton}
+							</button>
+						)}
+					</>
+				) : gamePhase === 'playing' ? (
+					<>
+						<ConnectionsView />
+						<div className="flex gap-4">
+							<button
+								onClick={handleShowResults}
+								className="flex-1 rounded-lg bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
+							>
+								Show Results
+							</button>
+							<button
+								onClick={async () => {
+									if (
+										confirm(
+											'Are you sure you want to reset the game? All progress will be lost.'
+										)
+									) {
+										await setupGameActions.resetGame();
+									}
+								}}
+								className="rounded-lg bg-red-500 px-4 py-3 font-medium text-white hover:bg-red-600"
+							>
+								{config.resetGameButton}
+							</button>
+						</div>
+					</>
+				) : (
+					<RoundResultsView />
+				)}
 			</HostPresenterLayout.Main>
 		</HostPresenterLayout.Root>
 	);

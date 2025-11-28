@@ -2,7 +2,7 @@ import { z } from 'zod/v4';
 
 export const schema = z.object({
 	// translations
-	title: z.string().default('My Game'),
+	title: z.string().default('Bubble Merge'),
 
 	gameLobbyMd: z
 		.string()
@@ -34,7 +34,100 @@ export const schema = z.object({
 	playerLinkLabel: z.string().default('Player Link'),
 	presenterLinkLabel: z.string().default('Presenter Link'),
 
-	menuAriaLabel: z.string().default('Open menu drawer')
+	menuAriaLabel: z.string().default('Open menu drawer'),
+
+	// Bubble Merge game strings
+	gameSetupTitle: z.string().default('Game Setup'),
+	gameSetupModeManual: z.string().default('Manual Entry'),
+	gameSetupModeAI: z.string().default('AI Generated'),
+	gameSetupManualMd: z
+		.string()
+		.default(
+			'Enter a target category and bubble labels to create your puzzle.'
+		),
+	gameSetupAIMd: z
+		.string()
+		.default('Enter a theme and let AI generate a puzzle for you.'),
+	targetCategoryLabel: z.string().default('Target Category'),
+	targetCategoryPlaceholder: z.string().default('e.g., Breaking Bad'),
+	correctBubbleLabel: z.string().default('Correct Bubble'),
+	incorrectBubbleLabel: z.string().default('Incorrect Bubble'),
+	bubblePlaceholder: z.string().default('Enter label...'),
+	themeLabel: z.string().default('Theme or Topic'),
+	themePlaceholder: z
+		.string()
+		.default('e.g., Breaking Bad, Planets, React Hooks'),
+	totalRoundsLabel: z.string().default('Number of Rounds'),
+	createPuzzleButton: z.string().default('Create Puzzle'),
+	generateWithAIButton: z.string().default('Generate with AI'),
+	generatingAI: z.string().default('Generating puzzle...'),
+	aiGenerationError: z
+		.string()
+		.default('Failed to generate puzzle. Try again.'),
+
+	startRoundButton: z.string().default('Start Round'),
+	nextRoundButton: z.string().default('Next Round'),
+	resetGameButton: z.string().default('New Game'),
+	currentRoundLabel: z.string().default('Round'),
+
+	progressLabel: z.string().default('Progress'),
+	absorbedLabel: z.string().default('Absorbed'),
+	accuracyLabel: z.string().default('Accuracy'),
+	completionTimeLabel: z.string().default('Time'),
+	scoreLabel: z.string().default('Score'),
+
+	roundCompleteTitle: z.string().default('Round Complete!'),
+	roundCompleteMd: z
+		.string()
+		.default('Great job! Check out the results below.'),
+	waitingForNextRoundMd: z
+		.string()
+		.default('Waiting for host to start the next round...'),
+	leaderboardTitle: z.string().default('Leaderboard'),
+	noScoresYet: z.string().default('No scores yet'),
+
+	bubbleGameInstructionsMd: z
+		.string()
+		.default(
+			'**Pull back and release** to shoot bubbles into the target!\n\n✅ Stop correct bubbles inside to absorb them\n❌ Incorrect bubbles bounce off'
+		),
+
+	presenterRaceTitle: z.string().default('Live Race Progress'),
+	presenterWaitingMd: z.string().default('Waiting for round to start...'),
+
+	// Game parameters
+	initialCorrectCount: z.number().default(4),
+	initialIncorrectCount: z.number().default(2),
+	difficultyCorrectionIncrement: z.number().default(1),
+	difficultyIncorrectIncrement: z.number().default(1),
+	speedMultiplierIncrement: z.number().default(0.3),
+	targetScaleDecrement: z.number().default(0.1),
+	gravityIncrement: z.number().default(0.1),
+	maxBubblesTotal: z.number().default(12),
+	maxSpeedMultiplier: z.number().default(2.2),
+	minTargetScale: z.number().default(0.5),
+
+	baseScore: z.number().default(1000),
+	maxTimeBonus: z.number().default(500),
+	timeBonusDivisor: z.number().default(100),
+
+	roundTimeoutSeconds: z.number().default(180),
+
+	// Physics parameters
+	physicsGravityX: z.number().default(0),
+	physicsGravityY: z.number().default(0.3),
+	physicsWallRestitution: z.number().default(0.6),
+	bubbleRadius: z.number().default(35),
+	bubbleDensity: z.number().default(0.001),
+	bubbleRestitution: z.number().default(0.7),
+	bubbleFriction: z.number().default(0.05),
+	targetBubbleRadius: z.number().default(80),
+	targetGrowthIncrement: z.number().default(0.1),
+
+	// Audio
+	correctPopVolume: z.number().default(0.6),
+	incorrectBounceVolume: z.number().default(0.4),
+	levelCompleteVolume: z.number().default(0.8)
 });
 
 export type Config = z.infer<typeof schema>;

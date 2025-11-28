@@ -7,30 +7,34 @@ import { PlayerLayout } from '@/layouts/player';
 import { playerActions } from '@/state/actions/player-actions';
 import { globalStore } from '@/state/stores/global-store';
 import { playerStore } from '@/state/stores/player-store';
+import { BubbleGameView } from '@/views/bubble-game-view';
 import { ConnectionsView } from '@/views/connections-view';
 import { CreateProfileView } from '@/views/create-profile-view';
 import { GameLobbyView } from '@/views/game-lobby-view';
+import { RoundResultsView } from '@/views/round-results-view';
 import { SharedStateView } from '@/views/shared-state-view';
-import { KmModalProvider } from '@kokimoki/shared';
+import { KmConfettiProvider, KmModalProvider } from '@kokimoki/shared';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
 
 const App: React.FC = () => {
 	const { title } = config;
 	const { name, currentView } = useSnapshot(playerStore.proxy);
-	const { started } = useSnapshot(globalStore.proxy);
+	const { gamePhase } = useSnapshot(globalStore.proxy);
 
 	useGlobalController();
 	useDocumentTitle(title);
 
 	React.useEffect(() => {
-		// While game start, force view to 'shared-state', otherwise to 'lobby'
-		if (started) {
-			playerActions.setCurrentView('shared-state');
-		} else {
+		// Auto-navigate based on game phase
+		if (gamePhase === 'playing') {
+			playerActions.setCurrentView('bubble-game');
+		} else if (gamePhase === 'results') {
+			playerActions.setCurrentView('round-results');
+		} else if (gamePhase === 'idle' || gamePhase === 'setup') {
 			playerActions.setCurrentView('lobby');
 		}
-	}, [started]);
+	}, [gamePhase]);
 
 	if (!name) {
 		return (
@@ -43,7 +47,7 @@ const App: React.FC = () => {
 		);
 	}
 
-	if (!started) {
+	if (gamePhase === 'idle' || gamePhase === 'setup') {
 		return (
 			<KmModalProvider>
 				<PlayerLayout.Root>
@@ -65,18 +69,21 @@ const App: React.FC = () => {
 	}
 
 	return (
-		<PlayerLayout.Root>
-			<PlayerLayout.Header />
+		<KmConfettiProvider>
+			<PlayerLayout.Root>
+				<PlayerLayout.Header />
 
-			<PlayerLayout.Main>
-				{currentView === 'shared-state' && <SharedStateView />}
-				{/* Add new views here */}
-			</PlayerLayout.Main>
+				<PlayerLayout.Main>
+					{currentView === 'shared-state' && <SharedStateView />}
+					{currentView === 'bubble-game' && <BubbleGameView />}
+					{currentView === 'round-results' && <RoundResultsView />}
+				</PlayerLayout.Main>
 
-			<PlayerLayout.Footer>
-				<NameLabel name={name} />
-			</PlayerLayout.Footer>
-		</PlayerLayout.Root>
+				<PlayerLayout.Footer>
+					<NameLabel name={name} />
+				</PlayerLayout.Footer>
+			</PlayerLayout.Root>
+		</KmConfettiProvider>
 	);
 };
 

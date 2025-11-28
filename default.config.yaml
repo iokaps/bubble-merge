@@ -1,11 +1,11 @@
 # yaml-language-server: $schema=./.kokimoki/schema.json
 
 # Translations
-title: 'Host Starter'
+title: 'Bubble Merge'
 
 gameLobbyMd: |
   # Waiting for game to start...
-  The game will start once the host presses the start button.
+  The host is setting up the puzzle. Get ready to merge some bubbles!
 
 connectionsMd: |
   # Connections example
@@ -37,3 +37,82 @@ playerLinkLabel: 'Player Link'
 presenterLinkLabel: 'Presenter Link'
 
 menuAriaLabel: 'Open menu drawer'
+
+# Bubble Merge game strings
+gameSetupTitle: 'Game Setup'
+gameSetupModeManual: 'Manual Entry'
+gameSetupModeAI: 'AI Generated'
+gameSetupManualMd: 'Enter a target category and bubble labels to create your puzzle.'
+gameSetupAIMd: 'Enter a theme and let AI generate a puzzle for you.'
+targetCategoryLabel: 'Target Category'
+targetCategoryPlaceholder: 'e.g., Breaking Bad'
+correctBubbleLabel: 'Correct Bubble'
+incorrectBubbleLabel: 'Incorrect Bubble'
+bubblePlaceholder: 'Enter label...'
+themeLabel: 'Theme or Topic'
+themePlaceholder: 'e.g., Breaking Bad, Planets, React Hooks'
+totalRoundsLabel: 'Number of Rounds'
+createPuzzleButton: 'Create Puzzle'
+generateWithAIButton: 'Generate with AI'
+generatingAI: 'Generating puzzle...'
+aiGenerationError: 'Failed to generate puzzle. Try again.'
+
+startRoundButton: 'Start Round'
+nextRoundButton: 'Next Round'
+resetGameButton: 'New Game'
+currentRoundLabel: 'Round'
+
+progressLabel: 'Progress'
+absorbedLabel: 'Absorbed'
+accuracyLabel: 'Accuracy'
+completionTimeLabel: 'Time'
+scoreLabel: 'Score'
+
+roundCompleteTitle: '🎉 Round Complete!'
+roundCompleteMd: 'Great job! Check out the results below.'
+waitingForNextRoundMd: 'Waiting for host to start the next round...'
+leaderboardTitle: 'Leaderboard'
+noScoresYet: 'No scores yet'
+
+bubbleGameInstructionsMd: |
+  **Pull back and release** to shoot bubbles into the target!
+
+  ✅ Stop correct bubbles inside to absorb them
+  ❌ Incorrect bubbles bounce off
+
+presenterRaceTitle: 'Live Race Progress'
+presenterWaitingMd: 'Waiting for round to start...'
+
+# Game parameters
+initialCorrectCount: 4
+initialIncorrectCount: 2
+difficultyCorrectionIncrement: 1
+difficultyIncorrectIncrement: 1
+speedMultiplierIncrement: 0.3
+targetScaleDecrement: 0.1
+gravityIncrement: 0.1
+maxBubblesTotal: 12
+maxSpeedMultiplier: 2.2
+minTargetScale: 0.5
+
+baseScore: 1000
+maxTimeBonus: 500
+timeBonusDivisor: 100
+
+roundTimeoutSeconds: 180
+
+# Physics parameters
+physicsGravityX: 0
+physicsGravityY: 0.3
+physicsWallRestitution: 0.6
+bubbleRadius: 35
+bubbleDensity: 0.001
+bubbleRestitution: 0.7
+bubbleFriction: 0.05
+targetBubbleRadius: 80
+targetGrowthIncrement: 0.1
+
+# Audio
+correctPopVolume: 0.6
+incorrectBounceVolume: 0.4
+levelCompleteVolume: 0.8

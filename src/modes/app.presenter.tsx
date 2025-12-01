@@ -1,6 +1,5 @@
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useGlobalController } from '@/hooks/useGlobalController';
 import { generateLink } from '@/kit/generate-link';
 import { HostPresenterLayout } from '@/layouts/host-presenter';
 import { kmClient } from '@/services/km-client';
@@ -15,7 +14,7 @@ import { useSnapshot } from 'valtio';
 const App: React.FC = () => {
 	const { title } = config;
 
-	useGlobalController();
+	// Presenter is read-only, don't use global controller
 	useDocumentTitle(title);
 
 	const { gamePhase, playerProgress, players, currentRound, roundConfig } =

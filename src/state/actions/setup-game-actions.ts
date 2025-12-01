@@ -150,7 +150,11 @@ Respond with JSON in this exact format:
 			state.totalRounds = totalRounds;
 			state.gamePhase = 'setup';
 			state.currentRound = 0;
-			// Store first round puzzle
+
+			// Store all rounds
+			state.allRoundsPuzzles = roundsContent;
+
+			// Set up first round puzzle
 			const firstRound = roundsContent[0];
 			const bubbles: BubbleData[] = [
 				...firstRound.correctBubbles.map((label, i) => ({
@@ -169,8 +173,6 @@ Respond with JSON in this exact format:
 				category: firstRound.targetCategory.trim()
 			};
 			state.bubbles = bubbles;
-			// Store remaining rounds in a temporary location (we'll use currentRound to track)
-			// For now, we'll regenerate each round. For better UX, consider storing all rounds.
 		});
 	},
 
@@ -179,12 +181,35 @@ Respond with JSON in this exact format:
 	 */
 	async startRound() {
 		await kmClient.transact([globalStore], ([state]) => {
-			// Validate puzzle is ready
-			if (state.bubbles.length === 0) {
+			const roundNumber = state.currentRound + 1;
+
+			// If we have stored puzzles, load the next round's puzzle
+			if (
+				state.allRoundsPuzzles.length > 0 &&
+				roundNumber <= state.allRoundsPuzzles.length
+			) {
+				const roundPuzzle = state.allRoundsPuzzles[roundNumber - 1];
+				const bubbles: BubbleData[] = [
+					...roundPuzzle.correctBubbles.map((label, i) => ({
+						id: `correct-${i}`,
+						label: label.trim(),
+						isCorrect: true
+					})),
+					...roundPuzzle.incorrectBubbles.map((label, i) => ({
+						id: `incorrect-${i}`,
+						label: label.trim(),
+						isCorrect: false
+					}))
+				];
+				state.targetBubble = {
+					label: roundPuzzle.targetCategory.trim(),
+					category: roundPuzzle.targetCategory.trim()
+				};
+				state.bubbles = bubbles;
+			} else if (state.bubbles.length === 0) {
 				throw new Error('No puzzle created yet');
 			}
-
-			const roundNumber = state.currentRound + 1;
+			// If no stored puzzles, keep current bubbles (manual mode)
 
 			// Calculate difficulty config
 			const correctCount = Math.min(
@@ -234,6 +259,7 @@ Respond with JSON in this exact format:
 			state.roundStartTime = 0;
 			state.roundTimeRemaining = 0;
 			state.bubbles = [];
+			state.allRoundsPuzzles = [];
 			state.targetBubble = { label: '', category: '' };
 			state.playerProgress = {};
 			state.roundWinners = [];

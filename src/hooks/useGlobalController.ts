@@ -56,10 +56,13 @@ export function useGlobalController() {
 			if (remaining <= 0 && roundEndTriggeredRef.current !== currentRound) {
 				roundEndTriggeredRef.current = currentRound;
 				console.log(
-					'[Controller] Round ended. Current:',
+					'[Controller] Round ended.',
+					'CurrentRound:',
 					currentRound,
-					'Total:',
-					totalRounds
+					'TotalRounds:',
+					totalRounds,
+					'IsLastRound:',
+					currentRound >= totalRounds
 				);
 				kmClient
 					.transact([globalStore], ([state]) => {
@@ -74,6 +77,11 @@ export function useGlobalController() {
 							state.gamePhase = 'countdown';
 							state.countdownStartTime = kmClient.serverTimestamp();
 						}
+					})
+					.then(() => {
+						console.log(
+							'[Controller] Round end transaction completed successfully'
+						);
 					})
 					.catch((err) =>
 						console.error('[Controller] Error ending round:', err)

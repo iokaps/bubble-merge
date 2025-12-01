@@ -51,6 +51,13 @@ export interface GlobalState {
 	};
 	bubbles: BubbleData[];
 
+	// Store all rounds puzzles (for AI-generated games)
+	allRoundsPuzzles: Array<{
+		targetCategory: string;
+		correctBubbles: string[];
+		incorrectBubbles: string[];
+	}>;
+
 	// Player progress tracking
 	playerProgress: Record<string, PlayerProgress>;
 
@@ -81,6 +88,8 @@ const initialState: GlobalState = {
 		category: ''
 	},
 	bubbles: [],
+
+	allRoundsPuzzles: [],
 
 	playerProgress: {},
 	roundWinners: []

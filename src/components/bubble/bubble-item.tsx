@@ -27,14 +27,15 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 	const y = useMotionValue(position.y);
 	const [isDragging, setIsDragging] = React.useState(false);
 	const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
+	const isDraggingRef = React.useRef(false);
 
 	// Update position when physics engine updates (only when not dragging)
 	React.useEffect(() => {
-		if (!isDragging) {
+		if (!isDraggingRef.current) {
 			x.set(position.x);
 			y.set(position.y);
 		}
-	}, [position.x, position.y, x, y, isDragging]);
+	}, [position.x, position.y, x, y]);
 
 	return (
 		<>
@@ -82,9 +83,11 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 					height: config.bubbleRadius * 2,
 					translateX: -config.bubbleRadius,
 					translateY: -config.bubbleRadius,
-					zIndex: isDragging ? 10 : 2
+					zIndex: isDragging ? 10 : 2,
+					willChange: 'transform'
 				}}
 				onDragStart={() => {
+					isDraggingRef.current = true;
 					setIsDragging(true);
 					setDragOffset({ x: 0, y: 0 });
 					onDragStart?.(id);
@@ -94,6 +97,7 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 					setDragOffset({ x: info.offset.x, y: info.offset.y });
 				}}
 				onDragEnd={(_, info) => {
+					isDraggingRef.current = false;
 					setIsDragging(false);
 					setDragOffset({ x: 0, y: 0 });
 					// Pass negative offset to shoot in opposite direction

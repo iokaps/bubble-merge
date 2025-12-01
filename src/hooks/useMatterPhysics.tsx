@@ -58,14 +58,14 @@ export function useMatterPhysics(
 
 		const world = engine.world;
 
-		// Create walls
+		// Create walls with high restitution to keep balls in play
 		const wallOptions = {
 			isStatic: true,
-			restitution: config.physicsWallRestitution,
+			restitution: 0.95, // Very bouncy to contain high-speed bubbles
 			friction: 0
 		};
 
-		const wallThickness = 50;
+		const wallThickness = 100; // Thicker walls to better contain bubbles
 		const walls = [
 			// Top wall
 			Matter.Bodies.rectangle(
@@ -141,13 +141,46 @@ export function useMatterPhysics(
 				// Calculate speed
 				const speed = Math.sqrt(body.velocity.x ** 2 + body.velocity.y ** 2);
 
-				// Check if bubble is inside target and almost stopped
+				// Check if bubble is inside target
 				const targetRadius = (config.targetBubbleRadius * targetScale) / 2;
-				if (distance < targetRadius && speed < 0.3) {
-					// Bubble is stopped inside target - absorb it!
-					collidedBubblesRef.current.add(id);
-					// Call collision handler asynchronously to not block physics
-					setTimeout(() => onCollision?.(id, isCorrect), 0);
+				if (distance < targetRadius) {
+					if (isCorrect) {
+						// Correct bubble: check if stopped to absorb
+						if (speed < 0.3) {
+							collidedBubblesRef.current.add(id);
+							// Call collision handler asynchronously to not block physics
+							setTimeout(() => onCollision?.(id, isCorrect), 0);
+						}
+					} else {
+						// Incorrect bubble: MASSIVE explosive rejection with containment
+						// Calculate direction away from center
+						const dirX = dx / distance;
+						const dirY = dy / distance;
+
+						// Apply extremely powerful force - bouncy walls will contain them
+						const normalizedDistance = distance / targetRadius;
+						const baseForceMagnitude =
+							8.0 * (1 - normalizedDistance * normalizedDistance);
+
+						// Apply the explosive force
+						Matter.Body.applyForce(body, body.position, {
+							x: dirX * baseForceMagnitude,
+							y: dirY * baseForceMagnitude
+						});
+
+						// Trigger collision event once when entering
+						if (distance < targetRadius * 0.8) {
+							if (!collidedBubblesRef.current.has(id)) {
+								collidedBubblesRef.current.add(id);
+								setTimeout(() => onCollision?.(id, isCorrect), 0);
+
+								// Remove from collision tracking after a delay so it can re-trigger
+								setTimeout(() => {
+									collidedBubblesRef.current.delete(id);
+								}, 1000);
+							}
+						}
+					}
 				}
 			}
 		};

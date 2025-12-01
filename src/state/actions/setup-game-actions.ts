@@ -67,7 +67,10 @@ export const setupGameActions = {
 	/**
 	 * Generate puzzles for all rounds using AI
 	 */
-	async generatePuzzlesWithAI(theme: string, totalRounds: number): Promise<void> {
+	async generatePuzzlesWithAI(
+		theme: string,
+		totalRounds: number
+	): Promise<void> {
 		if (!theme.trim()) {
 			throw new Error('Theme is required');
 		}
@@ -134,7 +137,9 @@ Respond with JSON in this exact format:
 				parsed.correctBubbles.length !== correctCount ||
 				parsed.incorrectBubbles.length !== incorrectCount
 			) {
-				throw new Error(`AI returned incorrect number of bubbles for round ${roundNumber}`);
+				throw new Error(
+					`AI returned incorrect number of bubbles for round ${roundNumber}`
+				);
 			}
 
 			roundsContent.push(parsed);

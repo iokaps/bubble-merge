@@ -49,9 +49,11 @@ export const GameSetupView: React.FC = () => {
 	};
 
 	return (
-		<div className="w-full max-w-2xl space-y-6">
+		<div className="w-full max-w-2xl space-y-4 px-2 sm:space-y-6 sm:px-0">
 			<div>
-				<h1 className="text-3xl font-bold">{config.gameSetupTitle}</h1>
+				<h1 className="text-2xl font-bold sm:text-3xl">
+					{config.gameSetupTitle}
+				</h1>
 			</div>
 
 			{/* Mode Toggle */}
@@ -61,8 +63,8 @@ export const GameSetupView: React.FC = () => {
 					className={cn(
 						'flex-1 rounded-lg px-4 py-2 font-medium transition-colors',
 						setupMode === 'manual'
-							? 'bg-blue-500 text-white'
-							: 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+							? 'bg-primary-500 text-white'
+							: 'bg-primary-100 text-text-primary hover:bg-primary-200'
 					)}
 				>
 					{config.gameSetupModeManual}
@@ -72,8 +74,8 @@ export const GameSetupView: React.FC = () => {
 					className={cn(
 						'flex-1 rounded-lg px-4 py-2 font-medium transition-colors',
 						setupMode === 'ai'
-							? 'bg-blue-500 text-white'
-							: 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+							? 'bg-primary-500 text-white'
+							: 'bg-primary-100 text-text-primary hover:bg-primary-200'
 					)}
 				>
 					{config.gameSetupModeAI}
@@ -82,13 +84,13 @@ export const GameSetupView: React.FC = () => {
 
 			{/* Manual Mode */}
 			{setupMode === 'manual' && (
-				<div className="space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+				<div className="border-primary-200 bg-surface space-y-4 rounded-lg border p-4 shadow-md sm:p-6">
 					<div className="prose prose-sm max-w-none">
 						<ReactMarkdown>{config.gameSetupManualMd}</ReactMarkdown>
 					</div>
 
 					<div>
-						<label className="mb-2 block text-sm font-medium">
+						<label className="text-text-primary mb-2 block text-sm font-medium">
 							{config.targetCategoryLabel}
 						</label>
 						<input
@@ -96,12 +98,12 @@ export const GameSetupView: React.FC = () => {
 							value={targetCategory}
 							onChange={(e) => setTargetCategory(e.target.value)}
 							placeholder={config.targetCategoryPlaceholder}
-							className="w-full rounded border border-gray-300 px-3 py-2"
+							className="border-border focus:border-primary-500 focus:ring-primary-200 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none"
 						/>
 					</div>
 
 					<div>
-						<label className="mb-2 block text-sm font-medium">
+						<label className="text-text-primary mb-2 block text-sm font-medium">
 							{config.correctBubbleLabel}s
 						</label>
 						<div className="space-y-2">
@@ -116,14 +118,14 @@ export const GameSetupView: React.FC = () => {
 										setCorrectBubbles(newBubbles);
 									}}
 									placeholder={`${config.correctBubbleLabel} ${i + 1}`}
-									className="w-full rounded border border-gray-300 px-3 py-2"
+									className="border-border focus:border-primary-500 focus:ring-primary-200 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none"
 								/>
 							))}
 						</div>
 					</div>
 
 					<div>
-						<label className="mb-2 block text-sm font-medium">
+						<label className="text-text-primary mb-2 block text-sm font-medium">
 							{config.incorrectBubbleLabel}s
 						</label>
 						<div className="space-y-2">
@@ -138,21 +140,21 @@ export const GameSetupView: React.FC = () => {
 										setIncorrectBubbles(newBubbles);
 									}}
 									placeholder={`${config.incorrectBubbleLabel} ${i + 1}`}
-									className="w-full rounded border border-gray-300 px-3 py-2"
+									className="border-border focus:border-primary-500 focus:ring-primary-200 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none"
 								/>
 							))}
 						</div>
 					</div>
 
 					{error && (
-						<div className="rounded bg-red-50 p-3 text-sm text-red-600">
+						<div className="bg-danger-50 text-danger-500 rounded p-3 text-sm">
 							{error}
 						</div>
 					)}
 
 					<button
 						onClick={handleCreateManual}
-						className="w-full rounded-lg bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600"
+						className="bg-primary-500 hover:bg-primary-600 w-full rounded-lg px-4 py-2 font-medium text-white"
 					>
 						{config.createPuzzleButton}
 					</button>
@@ -161,13 +163,13 @@ export const GameSetupView: React.FC = () => {
 
 			{/* AI Mode */}
 			{setupMode === 'ai' && (
-				<div className="space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+				<div className="border-primary-200 bg-surface space-y-4 rounded-lg border p-4 shadow-md sm:p-6">
 					<div className="prose prose-sm max-w-none">
 						<ReactMarkdown>{config.gameSetupAIMd}</ReactMarkdown>
 					</div>
 
 					<div>
-						<label className="mb-2 block text-sm font-medium">
+						<label className="text-text-primary mb-2 block text-sm font-medium">
 							{config.themeLabel}
 						</label>
 						<input
@@ -175,19 +177,19 @@ export const GameSetupView: React.FC = () => {
 							value={theme}
 							onChange={(e) => setTheme(e.target.value)}
 							placeholder={config.themePlaceholder}
-							className="w-full rounded border border-gray-300 px-3 py-2"
+							className="border-border focus:border-primary-500 focus:ring-primary-200 disabled:bg-primary-50 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none disabled:cursor-not-allowed"
 							disabled={isGenerating}
 						/>
 					</div>
 
 					<div>
-						<label className="mb-2 block text-sm font-medium">
+						<label className="text-text-primary mb-2 block text-sm font-medium">
 							{config.totalRoundsLabel}
 						</label>
 						<select
 							value={totalRounds}
 							onChange={(e) => setTotalRounds(Number(e.target.value))}
-							className="w-full rounded border border-gray-300 px-3 py-2"
+							className="border-border focus:border-primary-500 focus:ring-primary-200 disabled:bg-primary-50 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none disabled:cursor-not-allowed"
 							disabled={isGenerating}
 						>
 							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
@@ -199,7 +201,7 @@ export const GameSetupView: React.FC = () => {
 					</div>
 
 					{error && (
-						<div className="rounded bg-red-50 p-3 text-sm text-red-600">
+						<div className="bg-danger-50 text-danger-500 rounded p-3 text-sm">
 							{error}
 						</div>
 					)}
@@ -210,8 +212,8 @@ export const GameSetupView: React.FC = () => {
 						className={cn(
 							'w-full rounded-lg px-4 py-2 font-medium text-white',
 							isGenerating || !theme.trim()
-								? 'cursor-not-allowed bg-gray-400'
-								: 'bg-blue-500 hover:bg-blue-600'
+								? 'bg-text-muted cursor-not-allowed'
+								: 'bg-primary-500 hover:bg-primary-600'
 						)}
 					>
 						{isGenerating ? config.generatingAI : config.generateWithAIButton}

@@ -27,7 +27,7 @@ export const SharedStateView: React.FC<React.PropsWithChildren<Props>> = ({
 	return (
 		<div
 			className={cn(
-				'bg-white border border-gray-200 rounded-lg shadow-md w-full',
+				'bg-surface border-primary-200 w-full rounded-lg border shadow-md',
 				className
 			)}
 		>
@@ -38,9 +38,11 @@ export const SharedStateView: React.FC<React.PropsWithChildren<Props>> = ({
 
 				<div className="mt-4 grid gap-4">
 					{started && (
-						<div className="bg-white border border-gray-200 rounded-lg shadow p-6">
-							<div className="text-sm text-gray-500">{config.timeElapsed}</div>
-							<div className="text-3xl font-bold mt-1">
+						<div className="bg-surface border-primary-200 rounded-lg border p-6 shadow">
+							<div className="text-text-secondary text-sm">
+								{config.timeElapsed}
+							</div>
+							<div className="mt-1 text-3xl font-bold">
 								<KmTimeCountdown ms={serverTime - startTimestamp} />
 							</div>
 						</div>
@@ -48,7 +50,7 @@ export const SharedStateView: React.FC<React.PropsWithChildren<Props>> = ({
 
 					{!started && isHost && (
 						<button
-							className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 font-medium"
+							className="bg-primary-500 hover:bg-primary-600 rounded-lg px-4 py-2 font-medium text-white"
 							onClick={globalActions.startGame}
 						>
 							{config.startButton}
@@ -57,7 +59,7 @@ export const SharedStateView: React.FC<React.PropsWithChildren<Props>> = ({
 
 					{started && isHost && (
 						<button
-							className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 font-medium"
+							className="bg-danger-500 hover:bg-danger-600 rounded-lg px-4 py-2 font-medium text-white"
 							onClick={globalActions.stopGame}
 						>
 							{config.stopButton}

@@ -10,7 +10,7 @@ interface LayoutProps {
 const PlayerRoot: React.FC<LayoutProps> = ({ children, className }) => (
 	<main
 		className={cn(
-			'bg-slate-100 grid min-h-dvh grid-rows-[auto_1fr_auto]',
+			'from-primary-50 via-background to-secondary-50 grid h-dvh max-h-dvh w-full grid-rows-[auto_1fr_auto] overflow-hidden bg-gradient-to-br',
 			className
 		)}
 	>
@@ -21,7 +21,7 @@ const PlayerRoot: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerHeader: React.FC<LayoutProps> = ({ children, className }) => (
 	<header
 		className={cn(
-			'bg-white sticky top-0 z-10 shadow-sm py-4',
+			'bg-surface border-border sticky top-0 z-10 border-b py-4 shadow-sm',
 			className
 		)}
 	>
@@ -36,7 +36,7 @@ const PlayerHeader: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerMain: React.FC<LayoutProps> = ({ children, className }) => (
 	<main
 		className={cn(
-			'container mx-auto flex items-center justify-center p-4 lg:p-6',
+			'scrollable container mx-auto flex items-center justify-center overflow-y-auto p-4 lg:p-6',
 			className
 		)}
 	>
@@ -47,7 +47,7 @@ const PlayerMain: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerFooter: React.FC<LayoutProps> = ({ children, className }) => (
 	<footer
 		className={cn(
-			'bg-white text-gray-900 sticky bottom-0 z-10 p-4',
+			'bg-surface border-border sticky bottom-0 z-10 border-t p-4',
 			className
 		)}
 	>

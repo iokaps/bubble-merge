@@ -27,6 +27,7 @@ export const bubbleGameActions = {
 				};
 			} else {
 				progress.absorbedCount += 1;
+				progress.score += config.correctPoints;
 
 				// Check if round is complete
 				const targetCount = state.roundConfig.correctCount;
@@ -36,18 +37,8 @@ export const bubbleGameActions = {
 					const accuracy =
 						targetCount / (targetCount + progress.incorrectAttempts);
 
-					// Calculate score
-					const timeBonus = Math.max(
-						0,
-						config.maxTimeBonus - completionTime / config.timeBonusDivisor
-					);
-					const finalScore = Math.round(
-						(config.baseScore + timeBonus) * accuracy
-					);
-
 					progress.completionTime = completionTime;
 					progress.accuracy = accuracy;
-					progress.score = finalScore;
 
 					// Add to round winners
 					const playerName = state.players[clientId]?.name || 'Unknown';
@@ -55,7 +46,7 @@ export const bubbleGameActions = {
 						clientId,
 						playerName,
 						round: state.currentRound,
-						score: finalScore,
+						score: progress.score,
 						completionTime
 					});
 
@@ -81,10 +72,14 @@ export const bubbleGameActions = {
 					incorrectAttempts: 1,
 					completionTime: null,
 					accuracy: 0,
-					score: 0
+					score: -config.incorrectPointsPenalty
 				};
 			} else {
 				progress.incorrectAttempts += 1;
+				progress.score = Math.max(
+					0,
+					progress.score - config.incorrectPointsPenalty
+				);
 			}
 		});
 	},

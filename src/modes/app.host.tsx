@@ -53,7 +53,7 @@ const App: React.FC = () => {
 			</HostPresenterLayout.Header>
 
 			<HostPresenterLayout.Main>
-				<div className="rounded-lg border border-gray-200 bg-white shadow-md">
+				<div className="border-primary-200 bg-surface rounded-lg border shadow-md">
 					<div className="flex flex-col gap-2 p-6">
 						<h2 className="text-xl font-bold">{config.gameLinksTitle}</h2>
 						<KmQrCode data={playerLink} size={200} interactive={false} />
@@ -86,37 +86,29 @@ const App: React.FC = () => {
 						{bubbles.length > 0 && (
 							<button
 								onClick={handleStartRound}
-								className="w-full max-w-2xl rounded-lg bg-green-500 px-4 py-3 font-medium text-white hover:bg-green-600"
+								className="bg-success-500 w-full max-w-2xl rounded-lg px-4 py-3 font-medium text-white hover:brightness-90"
 							>
 								{config.startRoundButton}
 							</button>
 						)}
 					</>
-				) : gamePhase === 'playing' ? (
+				) : gamePhase === 'playing' || gamePhase === 'countdown' ? (
 					<>
 						<ConnectionsView />
-						<div className="flex gap-4">
-							<button
-								onClick={handleShowResults}
-								className="flex-1 rounded-lg bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
-							>
-								Show Results
-							</button>
-							<button
-								onClick={async () => {
-									if (
-										confirm(
-											'Are you sure you want to reset the game? All progress will be lost.'
-										)
-									) {
-										await setupGameActions.resetGame();
-									}
-								}}
-								className="rounded-lg bg-red-500 px-4 py-3 font-medium text-white hover:bg-red-600"
-							>
-								{config.resetGameButton}
-							</button>
-						</div>
+						<button
+							onClick={async () => {
+								if (
+									confirm(
+										'Are you sure you want to reset the game? All progress will be lost.'
+									)
+								) {
+									await setupGameActions.resetGame();
+								}
+							}}
+							className="bg-danger-500 w-full max-w-2xl rounded-lg px-4 py-3 font-medium text-white hover:brightness-90"
+						>
+							{config.resetGameButton}
+						</button>
 					</>
 				) : (
 					<RoundResultsView />

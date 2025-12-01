@@ -11,6 +11,7 @@ import { BubbleGameView } from '@/views/bubble-game-view';
 import { ConnectionsView } from '@/views/connections-view';
 import { CreateProfileView } from '@/views/create-profile-view';
 import { GameLobbyView } from '@/views/game-lobby-view';
+import { RoundCountdownView } from '@/views/round-countdown-view';
 import { RoundResultsView } from '@/views/round-results-view';
 import { SharedStateView } from '@/views/shared-state-view';
 import { KmConfettiProvider, KmModalProvider } from '@kokimoki/shared';
@@ -29,6 +30,8 @@ const App: React.FC = () => {
 		// Auto-navigate based on game phase
 		if (gamePhase === 'playing') {
 			playerActions.setCurrentView('bubble-game');
+		} else if (gamePhase === 'countdown') {
+			playerActions.setCurrentView('bubble-game'); // Stay on game view during countdown
 		} else if (gamePhase === 'results') {
 			playerActions.setCurrentView('round-results');
 		} else if (gamePhase === 'idle' || gamePhase === 'setup') {
@@ -75,7 +78,12 @@ const App: React.FC = () => {
 
 				<PlayerLayout.Main>
 					{currentView === 'shared-state' && <SharedStateView />}
-					{currentView === 'bubble-game' && <BubbleGameView />}
+					{currentView === 'bubble-game' && gamePhase === 'countdown' && (
+						<RoundCountdownView />
+					)}
+					{currentView === 'bubble-game' && gamePhase === 'playing' && (
+						<BubbleGameView />
+					)}
 					{currentView === 'round-results' && <RoundResultsView />}
 				</PlayerLayout.Main>
 

@@ -56,7 +56,7 @@ const App: React.FC = () => {
 			</HostPresenterLayout.Header>
 
 			<HostPresenterLayout.Main>
-				<div className="rounded-lg border border-gray-200 bg-white shadow-md">
+				<div className="border-primary-200 bg-surface rounded-lg border shadow-md">
 					<div className="flex flex-col gap-2 p-6">
 						<h2 className="text-xl font-bold">{config.playerLinkLabel}</h2>
 						<KmQrCode data={playerLink} size={200} interactive={false} />
@@ -73,7 +73,7 @@ const App: React.FC = () => {
 				</div>
 
 				{gamePhase === 'playing' ? (
-					<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+					<div className="border-primary-200 bg-surface rounded-lg border p-6 shadow-md">
 						<h2 className="mb-4 text-2xl font-bold">
 							{config.presenterRaceTitle}
 						</h2>
@@ -81,14 +81,14 @@ const App: React.FC = () => {
 							{sortedPlayers.map((player, index) => (
 								<div
 									key={player.clientId}
-									className="flex items-center gap-4 rounded-lg bg-gray-50 p-4"
+									className="bg-primary-50 flex items-center gap-4 rounded-lg p-4"
 								>
-									<div className="w-8 text-2xl font-bold text-gray-400">
+									<div className="text-text-muted w-8 text-2xl font-bold">
 										#{index + 1}
 									</div>
 									<div className="flex-1">
 										<div className="text-lg font-bold">{player.name}</div>
-										<div className="mt-2 h-4 overflow-hidden rounded-full bg-gray-200">
+										<div className="bg-primary-100 mt-2 h-4 overflow-hidden rounded-full">
 											<div
 												className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
 												style={{
@@ -102,7 +102,7 @@ const App: React.FC = () => {
 											{player.absorbedCount} / {roundConfig.correctCount}
 										</div>
 										{player.completionTime && (
-											<div className="text-sm font-medium text-green-600">
+											<div className="text-success-500 text-sm font-medium">
 												✓ Complete
 											</div>
 										)}
@@ -111,10 +111,17 @@ const App: React.FC = () => {
 							))}
 						</div>
 					</div>
+				) : gamePhase === 'countdown' ? (
+					<div className="prose prose-lg border-primary-200 bg-surface max-w-none rounded-lg border p-8 text-center">
+						<h2 className="text-primary-600 mb-4 text-4xl font-bold">
+							{config.currentRoundLabel} {currentRound + 1}
+						</h2>
+						<ReactMarkdown>{config.nextRoundCountdownMd}</ReactMarkdown>
+					</div>
 				) : gamePhase === 'results' ? (
 					<RoundResultsView />
 				) : (
-					<div className="prose prose-lg max-w-none rounded-lg border border-gray-200 bg-white p-8 text-center">
+					<div className="prose prose-lg border-primary-200 bg-surface max-w-none rounded-lg border p-8 text-center">
 						<ReactMarkdown>{config.presenterWaitingMd}</ReactMarkdown>
 						<ConnectionsView />
 					</div>

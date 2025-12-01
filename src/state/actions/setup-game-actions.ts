@@ -199,29 +199,14 @@ Respond with JSON in this exact format:
 				config.maxBubblesTotal - correctCount
 			);
 
-			const speedMultiplier = Math.min(
-				1.0 + (roundNumber - 1) * config.speedMultiplierIncrement,
-				config.maxSpeedMultiplier
-			);
-
-			const targetScale = Math.max(
-				1.0 - (roundNumber - 1) * config.targetScaleDecrement,
-				config.minTargetScale
-			);
-
-			const gravityY =
-				config.physicsGravityY + (roundNumber - 1) * config.gravityIncrement;
-
 			// Update state
 			state.currentRound = roundNumber;
 			state.roundStartTime = kmClient.serverTimestamp();
+			state.roundTimeRemaining = config.timePerRoundSeconds * 1000;
 			state.gamePhase = 'playing';
 			state.roundConfig = {
 				correctCount,
-				incorrectCount,
-				speedMultiplier,
-				targetScale,
-				gravityY
+				incorrectCount
 			};
 
 			// Reset player progress
@@ -247,26 +232,34 @@ Respond with JSON in this exact format:
 			state.currentRound = 0;
 			state.totalRounds = 3;
 			state.roundStartTime = 0;
+			state.roundTimeRemaining = 0;
 			state.bubbles = [];
 			state.targetBubble = { label: '', category: '' };
 			state.playerProgress = {};
 			state.roundWinners = [];
 			state.roundConfig = {
 				correctCount: config.initialCorrectCount,
-				incorrectCount: config.initialIncorrectCount,
-				speedMultiplier: 1.0,
-				targetScale: 1.0,
-				gravityY: config.physicsGravityY
+				incorrectCount: config.initialIncorrectCount
 			};
 		});
 	},
 
 	/**
-	 * Move to results phase
+	 * Move to results phase (final results after all rounds)
 	 */
 	async showResults() {
 		await kmClient.transact([globalStore], ([state]) => {
 			state.gamePhase = 'results';
+		});
+	},
+
+	/**
+	 * Start countdown to next round
+	 */
+	async startCountdown() {
+		await kmClient.transact([globalStore], ([state]) => {
+			state.gamePhase = 'countdown';
+			state.countdownStartTime = kmClient.serverTimestamp();
 		});
 	}
 };

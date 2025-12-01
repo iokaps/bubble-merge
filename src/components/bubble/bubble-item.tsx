@@ -1,127 +1,89 @@
 import { config } from '@/config';
 import { cn } from '@/utils/cn';
-import { motion, useMotionValue } from 'motion/react';
+import { motion } from 'motion/react';
 import * as React from 'react';
 
 export interface BubbleItemProps {
 	id: string;
 	label: string;
 	isCorrect: boolean;
-	initialX: number;
-	initialY: number;
 	position: { x: number; y: number };
-	onDragStart?: (id: string) => void;
-	onDragEnd?: (id: string, dragDeltaX: number, dragDeltaY: number) => void;
+	onDrop?: (
+		id: string,
+		isCorrect: boolean,
+		dropX: number,
+		dropY: number
+	) => void;
 	isAbsorbed?: boolean;
+	shouldShake?: boolean;
+	isDraggingAllowed?: boolean;
 }
 
 export const BubbleItem: React.FC<BubbleItemProps> = ({
 	id,
 	label,
+	isCorrect,
 	position,
-	onDragStart,
-	onDragEnd,
-	isAbsorbed = false
+	onDrop,
+	isAbsorbed = false,
+	shouldShake = false,
+	isDraggingAllowed = true
 }) => {
-	const x = useMotionValue(position.x);
-	const y = useMotionValue(position.y);
 	const [isDragging, setIsDragging] = React.useState(false);
-	const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
-	const isDraggingRef = React.useRef(false);
-
-	// Update position when physics engine updates (only when not dragging)
-	React.useEffect(() => {
-		if (!isDraggingRef.current) {
-			x.set(position.x);
-			y.set(position.y);
-		}
-	}, [position.x, position.y, x, y]);
 
 	return (
-		<>
-			{/* Slingshot line visual */}
-			{isDragging && (
-				<svg
-					style={{
-						position: 'absolute',
-						top: 0,
-						left: 0,
-						width: '100%',
-						height: '100%',
-						pointerEvents: 'none',
-						zIndex: 1
-					}}
-				>
-					<line
-						x1={position.x}
-						y1={position.y}
-						x2={position.x + dragOffset.x}
-						y2={position.y + dragOffset.y}
-						stroke="#ef4444"
-						strokeWidth="3"
-						strokeDasharray="5,5"
-					/>
-					<circle
-						cx={position.x}
-						cy={position.y}
-						r="5"
-						fill="#ef4444"
-						opacity="0.5"
-					/>
-				</svg>
-			)}
-
-			<motion.div
-				drag
-				dragMomentum={false}
-				dragElastic={0}
-				style={{
-					x,
-					y,
-					position: 'absolute',
-					width: config.bubbleRadius * 2,
-					height: config.bubbleRadius * 2,
-					translateX: -config.bubbleRadius,
-					translateY: -config.bubbleRadius,
-					zIndex: isDragging ? 10 : 2,
-					willChange: 'transform'
-				}}
-				onDragStart={() => {
-					isDraggingRef.current = true;
-					setIsDragging(true);
-					setDragOffset({ x: 0, y: 0 });
-					onDragStart?.(id);
-				}}
-				onDrag={(_, info) => {
-					// Track drag offset for slingshot visualization
-					setDragOffset({ x: info.offset.x, y: info.offset.y });
-				}}
-				onDragEnd={(_, info) => {
-					isDraggingRef.current = false;
-					setIsDragging(false);
-					setDragOffset({ x: 0, y: 0 });
-					// Pass negative offset to shoot in opposite direction
-					onDragEnd?.(id, -info.offset.x, -info.offset.y);
-				}}
-				animate={{
-					scale: isAbsorbed ? 0 : 1,
-					opacity: isAbsorbed ? 0 : 1
-				}}
-				transition={{
+		<motion.div
+			drag={isDraggingAllowed}
+			dragMomentum={false}
+			dragElastic={0.2}
+			style={{
+				position: 'absolute',
+				left: position.x,
+				top: position.y,
+				width: config.bubbleRadius * 2,
+				height: config.bubbleRadius * 2,
+				translateX: -config.bubbleRadius,
+				translateY: -config.bubbleRadius,
+				zIndex: isDragging ? 10 : 2
+			}}
+			onDragStart={() => setIsDragging(true)}
+			onDragEnd={(_, info) => {
+				setIsDragging(false);
+				const dropX = position.x + info.offset.x;
+				const dropY = position.y + info.offset.y;
+				onDrop?.(id, isCorrect, dropX, dropY);
+			}}
+			animate={{
+				scale: isAbsorbed ? 0 : isDragging ? 1.1 : 1,
+				opacity: isAbsorbed ? 0 : 1,
+				x: shouldShake && !isAbsorbed ? [0, -10, 10, -10, 10, 0] : 0
+			}}
+			transition={{
+				scale: {
 					type: 'spring',
 					stiffness: 300,
 					damping: 20
-				}}
-				className={cn(
-					'flex items-center justify-center rounded-full border-2 border-white shadow-lg',
-					'cursor-grab touch-none select-none active:cursor-grabbing',
-					'bg-gradient-to-br from-blue-400 to-indigo-500'
-				)}
-			>
-				<span className="px-2 text-center text-xs font-bold text-white">
-					{label}
-				</span>
-			</motion.div>
-		</>
+				},
+				opacity: {
+					duration: 0.3
+				},
+				x: {
+					duration: 0.5,
+					ease: 'easeInOut'
+				}
+			}}
+			className={cn(
+				'flex items-center justify-center rounded-full border-2 border-white shadow-lg',
+				'touch-none select-none',
+				isDraggingAllowed
+					? 'cursor-grab active:cursor-grabbing'
+					: 'cursor-not-allowed opacity-60',
+				'from-primary-500 to-primary-600 bg-gradient-to-br text-white'
+			)}
+		>
+			<span className="px-2 text-center text-xs font-bold text-white">
+				{label}
+			</span>
+		</motion.div>
 	);
 };

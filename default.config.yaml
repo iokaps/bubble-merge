@@ -71,46 +71,38 @@ scoreLabel: 'Score'
 roundCompleteTitle: '🎉 Round Complete!'
 roundCompleteMd: 'Great job! Check out the results below.'
 waitingForNextRoundMd: 'Waiting for host to start the next round...'
+nextRoundCountdownMd: 'Next round starting in...'
 leaderboardTitle: 'Leaderboard'
 noScoresYet: 'No scores yet'
+roundTimeUpMd: 'Time is up!'
 
 bubbleGameInstructionsMd: |
-  **Pull back and release** to shoot bubbles into the target!
+  **Drag and drop** the correct bubbles to the center!
 
-  ✅ Stop correct bubbles inside to absorb them
-  ❌ Incorrect bubbles bounce off
+  ✓ Correct = +points
+  ✗ Wrong = -points
 
 presenterRaceTitle: 'Live Race Progress'
 presenterWaitingMd: 'Waiting for round to start...'
+timeRemainingLabel: 'Time Remaining'
 
 # Game parameters
+minBubblesPerRound: 4
+maxBubblesPerRound: 10
 initialCorrectCount: 4
 initialIncorrectCount: 2
 difficultyCorrectionIncrement: 1
 difficultyIncorrectIncrement: 1
-speedMultiplierIncrement: 0.3
-targetScaleDecrement: 0.1
-gravityIncrement: 0.1
-maxBubblesTotal: 12
-maxSpeedMultiplier: 2.2
-minTargetScale: 0.5
+maxBubblesTotal: 10
 
-baseScore: 1000
-maxTimeBonus: 500
-timeBonusDivisor: 100
+correctPoints: 100
+incorrectPointsPenalty: 50
+timePerRoundSeconds: 30
 
-roundTimeoutSeconds: 180
-
-# Physics parameters
-physicsGravityX: 0
-physicsGravityY: 0.3
-physicsWallRestitution: 0.6
-bubbleRadius: 35
-bubbleDensity: 0.001
-bubbleRestitution: 0.7
-bubbleFriction: 0.05
-targetBubbleRadius: 80
-targetGrowthIncrement: 0.1
+# Visual parameters
+bubbleRadius: 40
+targetBubbleRadius: 90
+bubbleSpacing: 150
 
 # Audio
 correctPopVolume: 0.6

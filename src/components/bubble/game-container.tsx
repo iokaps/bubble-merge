@@ -17,14 +17,21 @@ export const GameContainer: React.FC<GameContainerProps> = ({
 	return (
 		<div
 			style={{
-				width: width,
-				height: height,
-				maxWidth: '100%',
-				maxHeight: '80vh'
+				width: '100%',
+				height: '100%',
+				maxWidth: Math.min(
+					width,
+					typeof window !== 'undefined' ? window.innerWidth - 32 : width
+				),
+				maxHeight: Math.min(
+					height,
+					typeof window !== 'undefined' ? window.innerHeight * 0.6 : height
+				),
+				aspectRatio: `${width} / ${height}`
 			}}
 			className={cn(
 				'relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-50 to-purple-50',
-				'border-2 border-gray-300 shadow-lg',
+				'border-border border-2 shadow-lg',
 				className
 			)}
 		>

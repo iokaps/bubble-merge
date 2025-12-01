@@ -9,9 +9,6 @@ export interface BubbleData {
 export interface RoundConfig {
 	correctCount: number;
 	incorrectCount: number;
-	speedMultiplier: number;
-	targetScale: number;
-	gravityY: number;
 }
 
 export interface PlayerProgress {
@@ -37,10 +34,12 @@ export interface GlobalState {
 	players: Record<string, { name: string }>;
 
 	// Game state
-	gamePhase: 'setup' | 'playing' | 'results' | 'idle';
+	gamePhase: 'setup' | 'playing' | 'countdown' | 'results' | 'idle';
 	currentRound: number;
 	totalRounds: number;
 	roundStartTime: number;
+	roundTimeRemaining: number; // Milliseconds remaining in round
+	countdownStartTime: number; // For countdown between rounds
 
 	// Round configuration
 	roundConfig: RoundConfig;
@@ -69,13 +68,12 @@ const initialState: GlobalState = {
 	currentRound: 0,
 	totalRounds: 3,
 	roundStartTime: 0,
+	roundTimeRemaining: 0,
+	countdownStartTime: 0,
 
 	roundConfig: {
 		correctCount: 4,
-		incorrectCount: 2,
-		speedMultiplier: 1.0,
-		targetScale: 1.0,
-		gravityY: 0.3
+		incorrectCount: 2
 	},
 
 	targetBubble: {

@@ -50,8 +50,8 @@ export const TargetBubble: React.FC<TargetBubbleProps> = ({
 			}}
 			className={cn(
 				'flex items-center justify-center rounded-full border-4 border-white',
-				'bg-gradient-to-br from-blue-400 to-purple-500',
-				'pointer-events-none shadow-2xl shadow-blue-500/50',
+				'from-secondary-500 to-primary-500 bg-gradient-to-br',
+				'shadow-primary-500/30 pointer-events-none shadow-2xl',
 				className
 			)}
 		>

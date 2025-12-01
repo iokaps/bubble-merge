@@ -83,46 +83,38 @@ export const schema = z.object({
 	waitingForNextRoundMd: z
 		.string()
 		.default('Waiting for host to start the next round...'),
+	nextRoundCountdownMd: z.string().default('Next round starting in...'),
 	leaderboardTitle: z.string().default('Leaderboard'),
 	noScoresYet: z.string().default('No scores yet'),
+	roundTimeUpMd: z.string().default('Time is up!'),
 
 	bubbleGameInstructionsMd: z
 		.string()
 		.default(
-			'**Pull back and release** to shoot bubbles into the target!\n\n✅ Stop correct bubbles inside to absorb them\n❌ Incorrect bubbles bounce off'
+			'**Drag and drop** the correct bubbles to the center!\n\n✅ Correct = +points\n❌ Wrong = -points'
 		),
 
 	presenterRaceTitle: z.string().default('Live Race Progress'),
 	presenterWaitingMd: z.string().default('Waiting for round to start...'),
+	timeRemainingLabel: z.string().default('Time Remaining'),
 
 	// Game parameters
+	minBubblesPerRound: z.number().default(4),
+	maxBubblesPerRound: z.number().default(10),
 	initialCorrectCount: z.number().default(4),
 	initialIncorrectCount: z.number().default(2),
 	difficultyCorrectionIncrement: z.number().default(1),
 	difficultyIncorrectIncrement: z.number().default(1),
-	speedMultiplierIncrement: z.number().default(0.3),
-	targetScaleDecrement: z.number().default(0.1),
-	gravityIncrement: z.number().default(0.1),
-	maxBubblesTotal: z.number().default(12),
-	maxSpeedMultiplier: z.number().default(2.2),
-	minTargetScale: z.number().default(0.5),
+	maxBubblesTotal: z.number().default(10),
 
-	baseScore: z.number().default(1000),
-	maxTimeBonus: z.number().default(500),
-	timeBonusDivisor: z.number().default(100),
+	correctPoints: z.number().default(100),
+	incorrectPointsPenalty: z.number().default(50),
+	timePerRoundSeconds: z.number().default(30),
 
-	roundTimeoutSeconds: z.number().default(180),
-
-	// Physics parameters
-	physicsGravityX: z.number().default(0),
-	physicsGravityY: z.number().default(0.3),
-	physicsWallRestitution: z.number().default(0.6),
-	bubbleRadius: z.number().default(35),
-	bubbleDensity: z.number().default(0.001),
-	bubbleRestitution: z.number().default(0.7),
-	bubbleFriction: z.number().default(0.05),
-	targetBubbleRadius: z.number().default(80),
-	targetGrowthIncrement: z.number().default(0.1),
+	// Visual parameters
+	bubbleRadius: z.number().default(40),
+	targetBubbleRadius: z.number().default(90),
+	bubbleSpacing: z.number().default(150),
 
 	// Audio
 	correctPopVolume: z.number().default(0.6),

@@ -44,44 +44,57 @@ export const RoundResultsView: React.FC = () => {
 	};
 
 	return (
-		<div className="w-full max-w-2xl space-y-6">
+		<div className="w-full max-w-2xl space-y-4 px-2 sm:space-y-6 sm:px-0">
 			{/* Title */}
 			<div className="text-center">
-				<h1 className="text-4xl font-bold">{config.roundCompleteTitle}</h1>
-				<div className="prose prose-sm mt-2 max-w-none">
+				<h1 className="text-primary-600 text-2xl font-bold sm:text-4xl">
+					{config.roundCompleteTitle}
+				</h1>
+				<div className="prose prose-sm text-text-primary mt-2 max-w-none">
 					<ReactMarkdown>{config.roundCompleteMd}</ReactMarkdown>
 				</div>
 			</div>
 
 			{/* Podium */}
 			{podiumData.length > 0 ? (
-				<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
-					<h2 className="mb-4 text-xl font-bold">{config.leaderboardTitle}</h2>
+				<div className="border-primary-200 bg-surface rounded-lg border p-6 shadow-md">
+					<h2 className="text-text-primary mb-4 text-xl font-bold">
+						{config.leaderboardTitle}
+					</h2>
 					<KmPodiumTable entries={podiumData} pointsLabel={config.scoreLabel} />
 				</div>
 			) : (
-				<div className="rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500">
+				<div className="border-primary-200 bg-surface text-text-secondary rounded-lg border p-6 text-center">
 					{config.noScoresYet}
 				</div>
 			)}
 
 			{/* All Results */}
 			{allResults.length > 3 && (
-				<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
-					<h3 className="mb-4 text-lg font-bold">All Players</h3>
+				<div className="border-primary-200 bg-surface rounded-lg border p-6 shadow-md">
+					<h3 className="text-text-primary mb-4 text-lg font-bold">
+						All Players
+					</h3>
 					<div className="space-y-2">
 						{allResults.map((result, index) => (
 							<div
 								key={result.clientId}
-								className="flex items-center justify-between rounded bg-gray-50 p-3"
+								className="bg-primary-50 flex items-center justify-between rounded-lg p-3"
 							>
 								<div className="flex items-center gap-3">
-									<span className="font-bold text-gray-500">#{index + 1}</span>
-									<span className="font-medium">{result.name}</span>
+									<span className="text-text-muted font-bold">
+										#{index + 1}
+									</span>
+									<span className="text-text-primary font-medium">
+										{result.name}
+									</span>
 								</div>
-								<div className="flex items-center gap-4 text-sm">
+								<div className="text-text-secondary flex items-center gap-4 text-sm">
 									<span>
-										{config.scoreLabel}: {result.score}
+										{config.scoreLabel}:{' '}
+										<span className="text-text-primary font-semibold">
+											{result.score}
+										</span>
 									</span>
 									<span>
 										{config.absorbedLabel}: {result.absorbedCount}
@@ -107,13 +120,13 @@ export const RoundResultsView: React.FC = () => {
 				<div className="flex gap-3">
 					<button
 						onClick={handleNextRound}
-						className="flex-1 rounded-lg bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
+						className="bg-primary-500 hover:bg-primary-600 flex-1 rounded-lg px-4 py-3 font-medium text-white transition-colors"
 					>
 						{config.nextRoundButton}
 					</button>
 					<button
 						onClick={handleResetGame}
-						className="rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 hover:bg-gray-50"
+						className="border-border bg-surface text-text-primary hover:bg-primary-50 rounded-lg border px-4 py-3 font-medium transition-colors"
 					>
 						{config.resetGameButton}
 					</button>
@@ -122,7 +135,7 @@ export const RoundResultsView: React.FC = () => {
 
 			{/* Player waiting message */}
 			{!isHost && (
-				<div className="prose prose-sm max-w-none rounded-lg border border-gray-200 bg-white p-4 text-center">
+				<div className="prose prose-sm border-primary-200 bg-surface max-w-none rounded-lg border p-4 text-center">
 					<ReactMarkdown>{config.waitingForNextRoundMd}</ReactMarkdown>
 				</div>
 			)}

@@ -1,4 +1,5 @@
 import { kmClient } from '@/services/km-client';
+import { setupGameActions } from '@/state/actions/setup-game-actions';
 import { globalStore } from '@/state/stores/global-store';
 import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
@@ -81,15 +82,22 @@ export function useGlobalController() {
 		}
 
 		// Handle countdown between rounds
-		if (gamePhase === 'countdown') {
+		if (gamePhase === 'countdown' && countdownStartTime > 0) {
 			const countdownElapsed = serverTime - countdownStartTime;
 			const countdownDuration = 3000; // 3 seconds
 
 			console.log(
-				'[Controller] Countdown phase. Elapsed:',
+				'[Controller] Countdown phase.',
+				'Elapsed:',
 				countdownElapsed,
+				'Duration:',
+				countdownDuration,
 				'Triggered:',
-				countdownTriggeredRef.current
+				countdownTriggeredRef.current,
+				'ServerTime:',
+				serverTime,
+				'StartTime:',
+				countdownStartTime
 			);
 
 			if (
@@ -99,20 +107,21 @@ export function useGlobalController() {
 				console.log('[Controller] Countdown complete - starting next round');
 				// Auto-start next round
 				countdownTriggeredRef.current = true;
-				const {
-					setupGameActions
-				} = require('@/state/actions/setup-game-actions');
 				setupGameActions
 					.startRound()
-					.then(() =>
-						console.log('[Controller] Next round started successfully')
-					)
-					.catch((err) =>
-						console.error('[Controller] Error starting next round:', err)
-					);
+					.then(() => {
+						console.log('[Controller] Next round started successfully');
+					})
+					.catch((err) => {
+						console.error('[Controller] Error starting next round:', err);
+						// Reset trigger on error to allow retry
+						countdownTriggeredRef.current = false;
+					});
 			}
-		} else {
-			// Reset the ref when not in countdown phase
+		}
+
+		// Reset the ref when phase changes away from countdown
+		if (gamePhase === 'playing') {
 			countdownTriggeredRef.current = false;
 		}
 	}, [isGlobalController, serverTime]);

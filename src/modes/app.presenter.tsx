@@ -30,7 +30,7 @@ const App: React.FC = () => {
 	});
 
 	// Sort players by progress
-	const sortedPlayers = Object.entries(playerProgress)
+	const sortedPlayers = Object.entries(playerProgress || {})
 		.map(([clientId, progress]) => ({
 			clientId,
 			name: players[clientId]?.name || 'Unknown',

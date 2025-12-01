@@ -97,10 +97,8 @@ export const BubbleGameView: React.FC = () => {
 			await bubbleGameActions.absorbBubble(bubbleId);
 
 			// Check if round complete
-			if (
-				myProgress &&
-				myProgress.absorbedCount + 1 >= roundConfig.correctCount
-			) {
+			const newAbsorbedCount = (myProgress?.absorbedCount || 0) + 1;
+			if (newAbsorbedCount >= roundConfig.correctCount) {
 				playVictorySound(config.levelCompleteVolume);
 				triggerConfetti({ preset: 'massive' });
 

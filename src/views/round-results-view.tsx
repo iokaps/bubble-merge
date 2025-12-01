@@ -26,7 +26,7 @@ export const RoundResultsView: React.FC = () => {
 	}));
 
 	// All players results
-	const allResults = Object.entries(playerProgress)
+	const allResults = Object.entries(playerProgress || {})
 		.filter(([, progress]) => progress.completionTime !== null)
 		.map(([clientId, progress]) => ({
 			clientId,

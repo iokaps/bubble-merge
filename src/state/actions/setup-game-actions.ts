@@ -52,6 +52,12 @@ export const setupGameActions = {
 			}))
 		];
 
+		// Shuffle bubbles to randomize positions
+		for (let i = bubbles.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[bubbles[i], bubbles[j]] = [bubbles[j], bubbles[i]];
+		}
+
 		// Update global store
 		await kmClient.transact([globalStore], ([state]) => {
 			state.targetBubble = {
@@ -168,6 +174,11 @@ Respond with JSON in this exact format:
 					isCorrect: false
 				}))
 			];
+			// Shuffle bubbles to randomize positions
+			for (let i = bubbles.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[bubbles[i], bubbles[j]] = [bubbles[j], bubbles[i]];
+			}
 			state.targetBubble = {
 				label: firstRound.targetCategory.trim(),
 				category: firstRound.targetCategory.trim()
@@ -201,6 +212,11 @@ Respond with JSON in this exact format:
 						isCorrect: false
 					}))
 				];
+				// Shuffle bubbles to randomize positions
+				for (let i = bubbles.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+					[bubbles[i], bubbles[j]] = [bubbles[j], bubbles[i]];
+				}
 				state.targetBubble = {
 					label: roundPuzzle.targetCategory.trim(),
 					category: roundPuzzle.targetCategory.trim()
@@ -208,8 +224,15 @@ Respond with JSON in this exact format:
 				state.bubbles = bubbles;
 			} else if (state.bubbles.length === 0) {
 				throw new Error('No puzzle created yet');
+			} else {
+				// Manual mode: shuffle existing bubbles for new round
+				const bubbles = [...state.bubbles];
+				for (let i = bubbles.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+					[bubbles[i], bubbles[j]] = [bubbles[j], bubbles[i]];
+				}
+				state.bubbles = bubbles;
 			}
-			// If no stored puzzles, keep current bubbles (manual mode)
 
 			// Calculate difficulty config
 			const correctCount = Math.min(

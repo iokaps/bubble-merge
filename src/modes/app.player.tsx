@@ -83,7 +83,6 @@ const App: React.FC = () => {
 						<BubbleGameView />
 					)}
 					{currentView === 'round-results' && <RoundResultsView />}
-					{gamePhase === 'results' && <RoundResultsView />}
 				</PlayerLayout.Main>
 
 				<PlayerLayout.Footer>

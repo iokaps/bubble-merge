@@ -13,27 +13,24 @@ export const RoundResultsView: React.FC = () => {
 	);
 	const isHost = kmClient.clientContext.mode === 'host';
 
-	// Filter winners for current round and prepare for podium
-	const currentRoundWinners = roundWinners
-		.filter((w) => w.round === currentRound)
-		.sort((a, b) => b.score - a.score)
-		.slice(0, 3);
-
-	const podiumData = currentRoundWinners.map((winner) => ({
-		id: winner.clientId,
-		name: winner.playerName,
-		points: winner.score
-	}));
-
-	// All players results (excluding top 3 to avoid duplication)
-	const allResults = Object.entries(playerProgress || {})
+	// Get all players sorted by score
+	const allPlayers = Object.entries(playerProgress || {})
 		.map(([clientId, progress]) => ({
 			clientId,
 			name: players[clientId]?.name || 'Unknown',
 			...progress
 		}))
-		.sort((a, b) => b.score - a.score)
-		.filter((_, index) => index >= 3); // Skip top 3 (they're in the podium)
+		.sort((a, b) => b.score - a.score);
+
+	// Top 3 for podium
+	const podiumData = allPlayers.slice(0, 3).map((player) => ({
+		id: player.clientId,
+		name: player.name,
+		points: player.score
+	}));
+
+	// Remaining players (4th place and below)
+	const otherPlayers = allPlayers.slice(3);
 
 	const handleResetGame = async () => {
 		await setupGameActions.resetGame();
@@ -65,14 +62,14 @@ export const RoundResultsView: React.FC = () => {
 				</div>
 			)}
 
-			{/* All Results */}
-			{allResults.length > 0 && (
+			{/* Other Players */}
+			{otherPlayers.length > 0 && (
 				<div className="border-primary-200 bg-surface rounded-lg border p-6 shadow-md">
 					<h3 className="text-text-primary mb-4 text-lg font-bold">
 						Other Players
 					</h3>
 					<div className="space-y-2">
-						{allResults.map((result, index) => (
+						{otherPlayers.map((result, index) => (
 							<div
 								key={result.clientId}
 								className="bg-primary-50 flex items-center justify-between rounded-lg p-3"

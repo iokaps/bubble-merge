@@ -2,13 +2,7 @@ import { kmClient } from '@/services/km-client';
 
 export interface PlayerState {
 	name: string;
-	currentView:
-		| 'lobby'
-		| 'shared-state'
-		| 'connections'
-		| 'game-setup'
-		| 'bubble-game'
-		| 'round-results';
+	currentView: 'lobby' | 'connections' | 'bubble-game' | 'round-results';
 	setupMode: 'manual' | 'ai';
 }
 

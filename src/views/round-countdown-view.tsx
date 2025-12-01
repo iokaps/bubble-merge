@@ -25,7 +25,7 @@ export const RoundCountdownView: React.FC = () => {
 
 			<div className="border-primary-200 bg-surface flex h-48 w-48 items-center justify-center rounded-full border-4 shadow-xl">
 				<div className="text-primary-600 text-6xl font-bold">
-					<KmTimeCountdown ms={remaining} format="seconds" />
+					<KmTimeCountdown ms={remaining} display="s" />
 				</div>
 			</div>
 

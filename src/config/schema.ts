@@ -9,13 +9,8 @@ export const schema = z.object({
 		.default(
 			'# Waiting for game to start...\nThe game will start once the host presses the start button.'
 		),
-	connectionsMd: z.string().default('# Connections example'),
-	sharedStateMd: z.string().default('# Shared State example'),
 
 	players: z.string().default('Players'),
-	timeElapsed: z.string().default('Time elapsed'),
-	startButton: z.string().default('Start Game'),
-	stopButton: z.string().default('Stop Game'),
 	loading: z.string().default('Loading...'),
 
 	menuTitle: z.string().default('Menu'),
@@ -66,7 +61,6 @@ export const schema = z.object({
 		.default('Failed to generate puzzle. Try again.'),
 
 	startRoundButton: z.string().default('Start Round'),
-	nextRoundButton: z.string().default('Next Round'),
 	resetGameButton: z.string().default('New Game'),
 	currentRoundLabel: z.string().default('Round'),
 
@@ -80,9 +74,6 @@ export const schema = z.object({
 	roundCompleteMd: z
 		.string()
 		.default('Great job! Check out the results below.'),
-	waitingForNextRoundMd: z
-		.string()
-		.default('Waiting for host to start the next round...'),
 	nextRoundCountdownMd: z.string().default('Next round starting in...'),
 	leaderboardTitle: z.string().default('Leaderboard'),
 	noScoresYet: z.string().default('No scores yet'),

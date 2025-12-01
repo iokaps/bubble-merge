@@ -268,24 +268,5 @@ Respond with JSON in this exact format:
 				incorrectCount: config.initialIncorrectCount
 			};
 		});
-	},
-
-	/**
-	 * Move to results phase (final results after all rounds)
-	 */
-	async showResults() {
-		await kmClient.transact([globalStore], ([state]) => {
-			state.gamePhase = 'results';
-		});
-	},
-
-	/**
-	 * Start countdown to next round
-	 */
-	async startCountdown() {
-		await kmClient.transact([globalStore], ([state]) => {
-			state.gamePhase = 'countdown';
-			state.countdownStartTime = kmClient.serverTimestamp();
-		});
 	}
 };

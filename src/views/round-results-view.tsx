@@ -25,19 +25,15 @@ export const RoundResultsView: React.FC = () => {
 		points: winner.score
 	}));
 
-	// All players results
+	// All players results (excluding top 3 to avoid duplication)
 	const allResults = Object.entries(playerProgress || {})
-		.filter(([, progress]) => progress.completionTime !== null)
 		.map(([clientId, progress]) => ({
 			clientId,
 			name: players[clientId]?.name || 'Unknown',
 			...progress
 		}))
-		.sort((a, b) => b.score - a.score);
-
-	const handleNextRound = async () => {
-		await setupGameActions.startRound();
-	};
+		.sort((a, b) => b.score - a.score)
+		.filter((_, index) => index >= 3); // Skip top 3 (they're in the podium)
 
 	const handleResetGame = async () => {
 		await setupGameActions.resetGame();
@@ -70,10 +66,10 @@ export const RoundResultsView: React.FC = () => {
 			)}
 
 			{/* All Results */}
-			{allResults.length > 3 && (
+			{allResults.length > 0 && (
 				<div className="border-primary-200 bg-surface rounded-lg border p-6 shadow-md">
 					<h3 className="text-text-primary mb-4 text-lg font-bold">
-						All Players
+						Other Players
 					</h3>
 					<div className="space-y-2">
 						{allResults.map((result, index) => (
@@ -83,7 +79,7 @@ export const RoundResultsView: React.FC = () => {
 							>
 								<div className="flex items-center gap-3">
 									<span className="text-text-muted font-bold">
-										#{index + 1}
+										#{index + 4}
 									</span>
 									<span className="text-text-primary font-medium">
 										{result.name}
@@ -117,27 +113,12 @@ export const RoundResultsView: React.FC = () => {
 
 			{/* Host Controls */}
 			{isHost && (
-				<div className="flex gap-3">
-					<button
-						onClick={handleNextRound}
-						className="bg-primary-500 hover:bg-primary-600 flex-1 rounded-lg px-4 py-3 font-medium text-white transition-colors"
-					>
-						{config.nextRoundButton}
-					</button>
-					<button
-						onClick={handleResetGame}
-						className="border-border bg-surface text-text-primary hover:bg-primary-50 rounded-lg border px-4 py-3 font-medium transition-colors"
-					>
-						{config.resetGameButton}
-					</button>
-				</div>
-			)}
-
-			{/* Player waiting message */}
-			{!isHost && (
-				<div className="prose prose-sm border-primary-200 bg-surface max-w-none rounded-lg border p-4 text-center">
-					<ReactMarkdown>{config.waitingForNextRoundMd}</ReactMarkdown>
-				</div>
+				<button
+					onClick={handleResetGame}
+					className="bg-primary-500 hover:bg-primary-600 w-full rounded-lg px-4 py-3 font-medium text-white transition-colors"
+				>
+					{config.resetGameButton}
+				</button>
 			)}
 		</div>
 	);

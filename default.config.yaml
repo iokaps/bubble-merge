@@ -7,17 +7,7 @@ gameLobbyMd: |
   # Waiting for game to start...
   The host is setting up the puzzle. Get ready to merge some bubbles!
 
-connectionsMd: |
-  # Connections example
-
-sharedStateMd: |
-  # Shared State example
-
 players: 'Players'
-timeElapsed: 'Time elapsed'
-startButton: 'Start Game'
-stopButton: 'Stop Game'
-
 loading: 'Loading...'
 
 menuTitle: 'Menu'
@@ -58,7 +48,6 @@ generatingAI: 'Generating puzzle...'
 aiGenerationError: 'Failed to generate puzzle. Try again.'
 
 startRoundButton: 'Start Round'
-nextRoundButton: 'Next Round'
 resetGameButton: 'New Game'
 currentRoundLabel: 'Round'
 
@@ -70,7 +59,6 @@ scoreLabel: 'Score'
 
 roundCompleteTitle: '🎉 Round Complete!'
 roundCompleteMd: 'Great job! Check out the results below.'
-waitingForNextRoundMd: 'Waiting for host to start the next round...'
 nextRoundCountdownMd: 'Next round starting in...'
 leaderboardTitle: 'Leaderboard'
 noScoresYet: 'No scores yet'

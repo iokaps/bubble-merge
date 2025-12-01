@@ -13,7 +13,6 @@ import { CreateProfileView } from '@/views/create-profile-view';
 import { GameLobbyView } from '@/views/game-lobby-view';
 import { RoundCountdownView } from '@/views/round-countdown-view';
 import { RoundResultsView } from '@/views/round-results-view';
-import { SharedStateView } from '@/views/shared-state-view';
 import { KmConfettiProvider, KmModalProvider } from '@kokimoki/shared';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
@@ -77,7 +76,6 @@ const App: React.FC = () => {
 				<PlayerLayout.Header />
 
 				<PlayerLayout.Main>
-					{currentView === 'shared-state' && <SharedStateView />}
 					{currentView === 'bubble-game' && gamePhase === 'countdown' && (
 						<RoundCountdownView />
 					)}

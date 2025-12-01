@@ -238,7 +238,7 @@ export const BubbleGameView: React.FC = () => {
 					<div
 						className={`text-xl font-bold sm:text-2xl ${timeRemainingSeconds <= 5 ? 'text-danger-500' : 'text-text-primary'}`}
 					>
-						<KmTimeCountdown ms={timeRemaining} format="seconds" />
+						<KmTimeCountdown ms={timeRemaining} display="s" />
 					</div>
 				</div>
 			</div>

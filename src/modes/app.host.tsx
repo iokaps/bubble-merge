@@ -37,10 +37,6 @@ const App: React.FC = () => {
 		await setupGameActions.startRound();
 	};
 
-	const handleShowResults = async () => {
-		await setupGameActions.showResults();
-	};
-
 	return (
 		<HostPresenterLayout.Root>
 			<HostPresenterLayout.Header>

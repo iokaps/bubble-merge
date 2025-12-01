@@ -101,40 +101,5 @@ export const bubbleGameActions = {
 				};
 			}
 		});
-	},
-
-	/**
-	 * Check if all players have completed the round
-	 */
-	isRoundComplete(): boolean {
-		const { playerProgress, players, roundConfig } = globalStore.proxy;
-		const playerCount = Object.keys(players).length;
-
-		if (playerCount === 0) return false;
-
-		const completedCount = Object.values(playerProgress).filter(
-			(p) => p.absorbedCount >= roundConfig.correctCount
-		).length;
-
-		return completedCount === playerCount;
-	},
-
-	/**
-	 * Get current player's progress
-	 */
-	getMyProgress() {
-		const clientId = kmClient.id;
-		return globalStore.proxy.playerProgress[clientId] || null;
-	},
-
-	/**
-	 * Get leaderboard for current round
-	 */
-	getRoundLeaderboard() {
-		const { roundWinners, currentRound } = globalStore.proxy;
-		return roundWinners
-			.filter((w) => w.round === currentRound)
-			.sort((a, b) => b.score - a.score)
-			.slice(0, 10); // Top 10
 	}
 };

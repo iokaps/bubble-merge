@@ -29,8 +29,6 @@ export interface RoundWinner {
 
 export interface GlobalState {
 	controllerConnectionId: string;
-	started: boolean;
-	startTimestamp: number;
 	players: Record<string, { name: string }>;
 
 	// Game state
@@ -67,8 +65,6 @@ export interface GlobalState {
 
 const initialState: GlobalState = {
 	controllerConnectionId: '',
-	started: false,
-	startTimestamp: 0,
 	players: {},
 
 	gamePhase: 'idle',

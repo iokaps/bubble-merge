@@ -80,7 +80,7 @@ body {
 .km-podium-table {
 	/* Ensure ALL text content is visible with high contrast */
 	color: var(--color-text-primary) !important;
-	
+
 	/* Target all possible child elements */
 	& * {
 		color: var(--color-text-primary) !important;
@@ -103,7 +103,7 @@ body {
 	& .km-podium-rank {
 		font-size: 1.5rem !important;
 	}
-	
+
 	/* Broader selectors for name display */
 	& div,
 	& span,

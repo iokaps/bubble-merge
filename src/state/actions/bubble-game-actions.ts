@@ -18,9 +18,9 @@ export const bubbleGameActions = {
 			const clientId = kmClient.id;
 			const progress = state.playerProgress[clientId];
 
-			// Ensure player name is synced
+			// Always ensure player name is synced
 			const playerName = playerStore.proxy.name;
-			if (playerName && !state.players[clientId]) {
+			if (playerName) {
 				state.players[clientId] = { name: playerName };
 			}
 
@@ -75,9 +75,9 @@ export const bubbleGameActions = {
 			const clientId = kmClient.id;
 			const progress = state.playerProgress[clientId];
 
-			// Ensure player name is synced
+			// Always ensure player name is synced
 			const playerName = playerStore.proxy.name;
-			if (playerName && !state.players[clientId]) {
+			if (playerName) {
 				state.players[clientId] = { name: playerName };
 			}
 
@@ -118,9 +118,9 @@ export const bubbleGameActions = {
 					score: 0
 				};
 
-				// Ensure player name is synced
+				// Always ensure player name is synced
 				const playerName = playerStore.proxy.name;
-				if (playerName && !state.players[clientId]) {
+				if (playerName) {
 					state.players[clientId] = { name: playerName };
 				}
 			}

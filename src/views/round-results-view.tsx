@@ -29,6 +29,11 @@ export const RoundResultsView: React.FC = () => {
 		points: player.score
 	}));
 
+	// Debug: Log podium data to verify names
+	console.log('[RoundResults] Podium data:', podiumData);
+	console.log('[RoundResults] All players:', allPlayers);
+	console.log('[RoundResults] Players dict:', players);
+
 	// Remaining players (4th place and below)
 	const otherPlayers = allPlayers.slice(3);
 

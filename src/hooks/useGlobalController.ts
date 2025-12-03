@@ -120,6 +120,8 @@ export function useGlobalController() {
 					.startRound()
 					.then(() => {
 						console.log('[Controller] Next round started successfully');
+						// Reset the ref after successful start for next countdown
+						countdownTriggeredRef.current = false;
 					})
 					.catch((err) => {
 						console.error('[Controller] Error starting next round:', err);
@@ -127,11 +129,6 @@ export function useGlobalController() {
 						countdownTriggeredRef.current = false;
 					});
 			}
-		}
-
-		// Reset the ref when phase changes away from countdown
-		if (gamePhase === 'playing') {
-			countdownTriggeredRef.current = false;
 		}
 	}, [
 		isGlobalController,

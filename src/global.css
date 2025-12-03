@@ -75,3 +75,24 @@ body {
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
 }
+
+/* KmPodiumTable styling overrides for better visibility */
+.km-podium-table {
+	/* Ensure player names are visible with high contrast */
+	& .km-podium-entry-name {
+		color: var(--color-text-primary) !important;
+		font-weight: 600 !important;
+		font-size: 1rem !important;
+	}
+
+	/* Ensure points/scores are visible */
+	& .km-podium-entry-points {
+		color: var(--color-text-primary) !important;
+		font-weight: 700 !important;
+	}
+
+	/* Medal/rank labels */
+	& .km-podium-rank {
+		font-size: 1.5rem !important;
+	}
+}

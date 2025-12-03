@@ -21,11 +21,11 @@ export const GameContainer: React.FC<GameContainerProps> = ({
 				height: '100%',
 				maxWidth: Math.min(
 					width,
-					typeof window !== 'undefined' ? window.innerWidth - 32 : width
+					typeof window !== 'undefined' ? window.innerWidth - 16 : width
 				),
 				maxHeight: Math.min(
 					height,
-					typeof window !== 'undefined' ? window.innerHeight * 0.6 : height
+					typeof window !== 'undefined' ? window.innerHeight * 0.75 : height
 				),
 				aspectRatio: `${width} / ${height}`
 			}}

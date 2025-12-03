@@ -48,6 +48,12 @@ export function useGlobalController() {
 			return;
 		}
 
+		// Reset countdown trigger when entering playing phase (new round started)
+		if (gamePhase === 'playing' && countdownTriggeredRef.current) {
+			console.log('[Controller] Resetting countdown trigger for new round');
+			countdownTriggeredRef.current = false;
+		}
+
 		// Handle round timer countdown
 		if (gamePhase === 'playing') {
 			const elapsed = serverTime - roundStartTime;
@@ -120,8 +126,6 @@ export function useGlobalController() {
 					.startRound()
 					.then(() => {
 						console.log('[Controller] Next round started successfully');
-						// Reset the ref after successful start for next countdown
-						countdownTriggeredRef.current = false;
 					})
 					.catch((err) => {
 						console.error('[Controller] Error starting next round:', err);

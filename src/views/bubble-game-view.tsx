@@ -207,14 +207,14 @@ export const BubbleGameView: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="flex w-full max-w-4xl flex-col space-y-3 sm:space-y-4">
+		<div className="flex w-full max-w-4xl flex-col space-y-2">
 			{/* Instructions */}
-			<div className="prose prose-sm border-primary-200 bg-surface max-w-none rounded-lg border p-3 shadow-md sm:p-4">
+			<div className="prose prose-sm border-primary-200 bg-surface max-w-none rounded-lg border p-2 text-xs shadow-md sm:p-3">
 				<ReactMarkdown>{config.bubbleGameInstructionsMd}</ReactMarkdown>
 			</div>
 
 			{/* Progress and Timer */}
-			<div className="border-primary-200 bg-surface flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 shadow-md sm:flex-nowrap sm:p-4">
+			<div className="border-primary-200 bg-surface flex flex-wrap items-center justify-between gap-2 rounded-lg border p-2 shadow-md sm:flex-nowrap sm:p-3">
 				<div className="flex-1 text-center">
 					<span className="text-text-secondary block text-xs font-medium sm:text-sm">
 						{config.progressLabel}

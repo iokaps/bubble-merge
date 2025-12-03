@@ -74,13 +74,9 @@ const App: React.FC = () => {
 				<PlayerLayout.Header />
 
 				<PlayerLayout.Main>
-					{currentView === 'bubble-game' && gamePhase === 'countdown' && (
-						<RoundCountdownView />
-					)}
-					{currentView === 'bubble-game' && gamePhase === 'playing' && (
-						<BubbleGameView />
-					)}
-					{currentView === 'round-results' && <RoundResultsView />}
+					{gamePhase === 'countdown' && <RoundCountdownView />}
+					{gamePhase === 'playing' && <BubbleGameView />}
+					{gamePhase === 'results' && <RoundResultsView />}
 				</PlayerLayout.Main>
 
 				<PlayerLayout.Footer>

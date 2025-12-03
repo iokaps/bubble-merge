@@ -69,7 +69,7 @@ const initialState: GlobalState = {
 
 	gamePhase: 'idle',
 	currentRound: 0,
-	totalRounds: 3,
+	totalRounds: 5,
 	roundStartTime: 0,
 	roundTimeRemaining: 0,
 	countdownStartTime: 0,

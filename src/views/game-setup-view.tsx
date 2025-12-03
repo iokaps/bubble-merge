@@ -13,7 +13,9 @@ export const GameSetupView: React.FC = () => {
 	const [correctBubbles, setCorrectBubbles] = React.useState(['', '', '', '']);
 	const [incorrectBubbles, setIncorrectBubbles] = React.useState(['', '']);
 	const [theme, setTheme] = React.useState('');
-	const [totalRounds, setTotalRounds] = React.useState(3);
+	const [totalRounds, setTotalRounds] = React.useState(
+		config.totalRoundsDefault
+	);
 	const [isGenerating, setIsGenerating] = React.useState(false);
 	const [error, setError] = React.useState('');
 

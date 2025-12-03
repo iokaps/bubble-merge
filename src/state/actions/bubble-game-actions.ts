@@ -7,6 +7,8 @@ export const bubbleGameActions = {
 	 * Handle bubble absorption (correct bubble)
 	 */
 	async absorbBubble(bubbleId: string) {
+		const { playerStore } = await import('../stores/player-store');
+
 		await kmClient.transact([globalStore], ([state]) => {
 			const bubble = state.bubbles.find((b) => b.id === bubbleId);
 			if (!bubble || !bubble.isCorrect) {
@@ -16,6 +18,12 @@ export const bubbleGameActions = {
 			const clientId = kmClient.id;
 			const progress = state.playerProgress[clientId];
 
+			// Ensure player name is synced
+			const playerName = playerStore.proxy.name;
+			if (playerName && !state.players[clientId]) {
+				state.players[clientId] = { name: playerName };
+			}
+
 			if (!progress) {
 				// Initialize progress if not exists
 				state.playerProgress[clientId] = {
@@ -23,7 +31,7 @@ export const bubbleGameActions = {
 					incorrectAttempts: 0,
 					completionTime: null,
 					accuracy: 0,
-					score: 0
+					score: config.correctPoints
 				};
 			} else {
 				progress.absorbedCount += 1;
@@ -61,9 +69,17 @@ export const bubbleGameActions = {
 	 * Handle incorrect bubble collision
 	 */
 	async recordIncorrectAttempt() {
+		const { playerStore } = await import('../stores/player-store');
+
 		await kmClient.transact([globalStore], ([state]) => {
 			const clientId = kmClient.id;
 			const progress = state.playerProgress[clientId];
+
+			// Ensure player name is synced
+			const playerName = playerStore.proxy.name;
+			if (playerName && !state.players[clientId]) {
+				state.players[clientId] = { name: playerName };
+			}
 
 			if (!progress) {
 				// Initialize progress if not exists
@@ -72,7 +88,7 @@ export const bubbleGameActions = {
 					incorrectAttempts: 1,
 					completionTime: null,
 					accuracy: 0,
-					score: -config.incorrectPointsPenalty
+					score: 0
 				};
 			} else {
 				progress.incorrectAttempts += 1;
@@ -88,6 +104,8 @@ export const bubbleGameActions = {
 	 * Initialize player progress when joining mid-game
 	 */
 	async initializeProgress() {
+		const { playerStore } = await import('../stores/player-store');
+
 		await kmClient.transact([globalStore], ([state]) => {
 			const clientId = kmClient.id;
 
@@ -99,6 +117,12 @@ export const bubbleGameActions = {
 					accuracy: 0,
 					score: 0
 				};
+
+				// Ensure player name is synced
+				const playerName = playerStore.proxy.name;
+				if (playerName && !state.players[clientId]) {
+					state.players[clientId] = { name: playerName };
+				}
 			}
 		});
 	}

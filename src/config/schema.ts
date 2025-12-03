@@ -53,6 +53,7 @@ export const schema = z.object({
 		.string()
 		.default('e.g., Breaking Bad, Planets, React Hooks'),
 	totalRoundsLabel: z.string().default('Number of Rounds'),
+	totalRoundsDefault: z.number().default(5),
 	createPuzzleButton: z.string().default('Create Puzzle'),
 	generateWithAIButton: z.string().default('Generate with AI'),
 	generatingAI: z.string().default('Generating puzzle...'),

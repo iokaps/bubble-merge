@@ -14,6 +14,16 @@ export function useGlobalController() {
 	const countdownTriggeredRef = useRef(false);
 	const roundEndTriggeredRef = useRef<number>(-1);
 
+	// Get reactive state values
+	const {
+		gamePhase,
+		roundStartTime,
+		roundTimeRemaining,
+		currentRound,
+		totalRounds,
+		countdownStartTime
+	} = useSnapshot(globalStore.proxy);
+
 	// Maintain connection that is assigned to be the global controller
 	useEffect(() => {
 		// Check if global controller is online
@@ -37,15 +47,6 @@ export function useGlobalController() {
 		if (!isGlobalController) {
 			return;
 		}
-
-		const {
-			gamePhase,
-			roundStartTime,
-			roundTimeRemaining,
-			currentRound,
-			totalRounds,
-			countdownStartTime
-		} = globalStore.proxy;
 
 		// Handle round timer countdown
 		if (gamePhase === 'playing') {
@@ -132,7 +133,16 @@ export function useGlobalController() {
 		if (gamePhase === 'playing') {
 			countdownTriggeredRef.current = false;
 		}
-	}, [isGlobalController, serverTime]);
+	}, [
+		isGlobalController,
+		serverTime,
+		gamePhase,
+		roundStartTime,
+		roundTimeRemaining,
+		currentRound,
+		totalRounds,
+		countdownStartTime
+	]);
 
 	return isGlobalController;
 }

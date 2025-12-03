@@ -2,7 +2,6 @@ import { PlayerMenu } from '@/components/player/menu';
 import { NameLabel } from '@/components/player/name-label';
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useGlobalController } from '@/hooks/useGlobalController';
 import { PlayerLayout } from '@/layouts/player';
 import { playerActions } from '@/state/actions/player-actions';
 import { globalStore } from '@/state/stores/global-store';
@@ -22,7 +21,6 @@ const App: React.FC = () => {
 	const { name, currentView } = useSnapshot(playerStore.proxy);
 	const { gamePhase } = useSnapshot(globalStore.proxy);
 
-	useGlobalController();
 	useDocumentTitle(title);
 
 	React.useEffect(() => {

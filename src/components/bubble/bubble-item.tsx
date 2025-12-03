@@ -30,9 +30,11 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 	isDraggingAllowed = true
 }) => {
 	const [isDragging, setIsDragging] = React.useState(false);
+	const containerRef = React.useRef<HTMLDivElement>(null);
 
 	return (
 		<motion.div
+			ref={containerRef}
 			drag={isDraggingAllowed}
 			dragMomentum={false}
 			dragElastic={0.2}
@@ -47,10 +49,24 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 				zIndex: isDragging ? 10 : 2
 			}}
 			onDragStart={() => setIsDragging(true)}
-			onDragEnd={(_, info) => {
+			onDragEnd={(event, info) => {
 				setIsDragging(false);
-				const dropX = position.x + info.offset.x;
-				const dropY = position.y + info.offset.y;
+
+				// Get the container element to calculate relative position
+				const container = containerRef.current?.parentElement;
+				if (!container) {
+					onDrop?.(id, isCorrect, position.x, position.y);
+					return;
+				}
+
+				// Get container bounds
+				const containerRect = container.getBoundingClientRect();
+
+				// Calculate drop position relative to container
+				// info.point gives us the page coordinates of the drop
+				const dropX = info.point.x - containerRect.left;
+				const dropY = info.point.y - containerRect.top;
+
 				onDrop?.(id, isCorrect, dropX, dropY);
 			}}
 			animate={{

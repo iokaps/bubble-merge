@@ -2,8 +2,8 @@ import { PlayerMenu } from '@/components/player/menu';
 import { NameLabel } from '@/components/player/name-label';
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useGlobalController } from '@/hooks/useGlobalController';
 import { PlayerLayout } from '@/layouts/player';
-import { playerActions } from '@/state/actions/player-actions';
 import { globalStore } from '@/state/stores/global-store';
 import { playerStore } from '@/state/stores/player-store';
 import { BubbleGameView } from '@/views/bubble-game-view';
@@ -22,19 +22,8 @@ const App: React.FC = () => {
 	const { gamePhase } = useSnapshot(globalStore.proxy);
 
 	useDocumentTitle(title);
-
-	React.useEffect(() => {
-		// Auto-navigate based on game phase
-		if (gamePhase === 'playing') {
-			playerActions.setCurrentView('bubble-game');
-		} else if (gamePhase === 'countdown') {
-			playerActions.setCurrentView('bubble-game'); // Stay on game view during countdown
-		} else if (gamePhase === 'results') {
-			playerActions.setCurrentView('round-results');
-		} else if (gamePhase === 'idle' || gamePhase === 'setup') {
-			playerActions.setCurrentView('lobby');
-		}
-	}, [gamePhase]);
+	// Player can also be controller if host tab is inactive
+	useGlobalController();
 
 	if (!name) {
 		return (

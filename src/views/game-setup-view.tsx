@@ -28,11 +28,14 @@ export const GameSetupView: React.FC = () => {
 	const handleCreateManual = async () => {
 		try {
 			setError('');
-			await setupGameActions.createPuzzleManual({
-				targetCategory,
-				correctBubbles: correctBubbles.filter((b) => b.trim()),
-				incorrectBubbles: incorrectBubbles.filter((b) => b.trim())
-			});
+			await setupGameActions.createPuzzleManual(
+				{
+					targetCategory,
+					correctBubbles: correctBubbles.filter((b) => b.trim()),
+					incorrectBubbles: incorrectBubbles.filter((b) => b.trim())
+				},
+				totalRounds
+			);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Failed to create puzzle');
 		}
@@ -105,45 +108,119 @@ export const GameSetupView: React.FC = () => {
 					</div>
 
 					<div>
-						<label className="text-text-primary mb-2 block text-sm font-medium">
-							{config.correctBubbleLabel}s
-						</label>
+						<div className="mb-2 flex items-center justify-between">
+							<label className="text-text-primary text-sm font-medium">
+								{config.correctBubbleLabel}s
+							</label>
+							<div className="flex gap-2">
+								<button
+									type="button"
+									onClick={() => setCorrectBubbles([...correctBubbles, ''])}
+									className="bg-success-500 hover:bg-success-600 rounded px-3 py-1 text-sm font-medium text-white"
+								>
+									+ Add
+								</button>
+								{correctBubbles.length > 1 && (
+									<button
+										type="button"
+										onClick={() =>
+											setCorrectBubbles(correctBubbles.slice(0, -1))
+										}
+										className="bg-danger-500 hover:bg-danger-600 rounded px-3 py-1 text-sm font-medium text-white"
+									>
+										- Remove
+									</button>
+								)}
+							</div>
+						</div>
 						<div className="space-y-2">
 							{correctBubbles.map((bubble, i) => (
-								<input
-									key={i}
-									type="text"
-									value={bubble}
-									onChange={(e) => {
-										const newBubbles = [...correctBubbles];
-										newBubbles[i] = e.target.value;
-										setCorrectBubbles(newBubbles);
-									}}
-									placeholder={`${config.correctBubbleLabel} ${i + 1}`}
-									className="border-border focus:border-primary-500 focus:ring-primary-200 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none"
-								/>
+								<div key={i} className="flex gap-2">
+									<input
+										type="text"
+										value={bubble}
+										onChange={(e) => {
+											const newBubbles = [...correctBubbles];
+											newBubbles[i] = e.target.value;
+											setCorrectBubbles(newBubbles);
+										}}
+										placeholder={`${config.correctBubbleLabel} ${i + 1}`}
+										className="border-border focus:border-primary-500 focus:ring-primary-200 flex-1 rounded border px-3 py-2 focus:ring-2 focus:outline-none"
+									/>
+									{correctBubbles.length > 1 && (
+										<button
+											type="button"
+											onClick={() =>
+												setCorrectBubbles(
+													correctBubbles.filter((_, idx) => idx !== i)
+												)
+											}
+											className="text-danger-500 hover:text-danger-600 px-2 text-xl font-bold"
+											title="Remove this bubble"
+										>
+											×
+										</button>
+									)}
+								</div>
 							))}
 						</div>
 					</div>
 
 					<div>
-						<label className="text-text-primary mb-2 block text-sm font-medium">
-							{config.incorrectBubbleLabel}s
-						</label>
+						<div className="mb-2 flex items-center justify-between">
+							<label className="text-text-primary text-sm font-medium">
+								{config.incorrectBubbleLabel}s
+							</label>
+							<div className="flex gap-2">
+								<button
+									type="button"
+									onClick={() => setIncorrectBubbles([...incorrectBubbles, ''])}
+									className="bg-success-500 hover:bg-success-600 rounded px-3 py-1 text-sm font-medium text-white"
+								>
+									+ Add
+								</button>
+								{incorrectBubbles.length > 1 && (
+									<button
+										type="button"
+										onClick={() =>
+											setIncorrectBubbles(incorrectBubbles.slice(0, -1))
+										}
+										className="bg-danger-500 hover:bg-danger-600 rounded px-3 py-1 text-sm font-medium text-white"
+									>
+										- Remove
+									</button>
+								)}
+							</div>
+						</div>
 						<div className="space-y-2">
 							{incorrectBubbles.map((bubble, i) => (
-								<input
-									key={i}
-									type="text"
-									value={bubble}
-									onChange={(e) => {
-										const newBubbles = [...incorrectBubbles];
-										newBubbles[i] = e.target.value;
-										setIncorrectBubbles(newBubbles);
-									}}
-									placeholder={`${config.incorrectBubbleLabel} ${i + 1}`}
-									className="border-border focus:border-primary-500 focus:ring-primary-200 w-full rounded border px-3 py-2 focus:ring-2 focus:outline-none"
-								/>
+								<div key={i} className="flex gap-2">
+									<input
+										type="text"
+										value={bubble}
+										onChange={(e) => {
+											const newBubbles = [...incorrectBubbles];
+											newBubbles[i] = e.target.value;
+											setIncorrectBubbles(newBubbles);
+										}}
+										placeholder={`${config.incorrectBubbleLabel} ${i + 1}`}
+										className="border-border focus:border-primary-500 focus:ring-primary-200 flex-1 rounded border px-3 py-2 focus:ring-2 focus:outline-none"
+									/>
+									{incorrectBubbles.length > 1 && (
+										<button
+											type="button"
+											onClick={() =>
+												setIncorrectBubbles(
+													incorrectBubbles.filter((_, idx) => idx !== i)
+												)
+											}
+											className="text-danger-500 hover:text-danger-600 px-2 text-xl font-bold"
+											title="Remove this bubble"
+										>
+											×
+										</button>
+									)}
+								</div>
 							))}
 						</div>
 					</div>

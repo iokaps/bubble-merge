@@ -42,16 +42,23 @@ export function useGlobalController() {
 			.catch(() => {});
 	}, [connectionIds, controllerConnectionId]);
 
+	// Reset countdown trigger when game phase changes
+	useEffect(() => {
+		if (!isGlobalController) return;
+
+		// Reset trigger when entering countdown or playing phase
+		if (gamePhase === 'countdown' || gamePhase === 'playing') {
+			console.log(
+				`[Controller] Phase changed to ${gamePhase}, resetting countdown trigger (was: ${countdownTriggeredRef.current})`
+			);
+			countdownTriggeredRef.current = false;
+		}
+	}, [isGlobalController, gamePhase]);
+
 	// Run global controller-specific logic
 	useEffect(() => {
 		if (!isGlobalController) {
 			return;
-		}
-
-		// Reset countdown trigger when entering playing phase (new round started)
-		if (gamePhase === 'playing' && countdownTriggeredRef.current) {
-			console.log('[Controller] Resetting countdown trigger for new round');
-			countdownTriggeredRef.current = false;
 		}
 
 		// Handle round timer countdown

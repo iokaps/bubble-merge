@@ -2,7 +2,7 @@ import { config } from '@/config';
 import { kmClient } from '@/services/km-client';
 import { setupGameActions } from '@/state/actions/setup-game-actions';
 import { globalStore } from '@/state/stores/global-store';
-import { KmPodiumTable, KmTimeCountdown } from '@kokimoki/shared';
+import { KmTimeCountdown } from '@kokimoki/shared';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSnapshot } from 'valtio';
@@ -31,6 +31,10 @@ export const RoundResultsView: React.FC = () => {
 
 	// Debug: Log podium data to verify names
 	console.log('[RoundResults] Podium data:', podiumData);
+	console.log(
+		'[RoundResults] Podium entries for KmPodiumTable:',
+		JSON.stringify(podiumData, null, 2)
+	);
 	console.log('[RoundResults] All players:', allPlayers);
 	console.log('[RoundResults] Players dict:', players);
 
@@ -59,7 +63,38 @@ export const RoundResultsView: React.FC = () => {
 					<h2 className="text-text-primary mb-4 text-xl font-bold">
 						{config.leaderboardTitle}
 					</h2>
-					<KmPodiumTable entries={podiumData} pointsLabel={config.scoreLabel} />
+
+					{/* Custom leaderboard display as fallback */}
+					<div className="mb-6 space-y-3">
+						{podiumData.map((entry, index) => (
+							<div
+								key={entry.id}
+								className="bg-primary-50 flex items-center justify-between rounded-lg p-4"
+							>
+								<div className="flex items-center gap-4">
+									<div className="text-3xl">
+										{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+									</div>
+									<div>
+										<div className="text-text-primary text-xl font-bold">
+											{entry.name}
+										</div>
+										<div className="text-text-secondary text-sm">
+											Rank #{index + 1}
+										</div>
+									</div>
+								</div>
+								<div className="text-right">
+									<div className="text-primary-600 text-2xl font-bold">
+										{entry.points}
+									</div>
+									<div className="text-text-secondary text-sm">
+										{config.scoreLabel}
+									</div>
+								</div>
+							</div>
+						))}
+					</div>
 				</div>
 			) : (
 				<div className="border-primary-200 bg-surface text-text-secondary rounded-lg border p-6 text-center">

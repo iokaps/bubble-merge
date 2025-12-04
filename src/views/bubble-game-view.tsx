@@ -9,7 +9,8 @@ import { globalStore } from '@/state/stores/global-store';
 import {
 	playBounceSound,
 	playPopSound,
-	playVictorySound
+	playVictorySound,
+	resumeAudioContext
 } from '@/utils/synth-audio';
 import { KmTimeCountdown, useKmConfettiContext } from '@kokimoki/shared';
 import * as React from 'react';
@@ -75,6 +76,9 @@ export const BubbleGameView: React.FC = () => {
 		if (absorbedBubbles.has(bubbleId)) return;
 		// Don't allow dropping if time is up
 		if (!isDraggingAllowed) return;
+
+		// Resume audio context on first interaction (iOS/Safari requirement)
+		await resumeAudioContext();
 
 		// Calculate distance from center
 		const centerX = containerSize.width / 2;
@@ -207,14 +211,14 @@ export const BubbleGameView: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="flex w-full max-w-4xl flex-col space-y-2">
+		<div className="flex h-full w-full max-w-4xl flex-col space-y-1">
 			{/* Instructions */}
-			<div className="prose prose-sm border-primary-200 bg-surface max-w-none rounded-lg border p-2 text-xs shadow-md sm:p-3">
+			<div className="prose prose-sm border-primary-200 bg-surface max-w-none flex-shrink-0 rounded border p-1.5 text-xs shadow-sm">
 				<ReactMarkdown>{config.bubbleGameInstructionsMd}</ReactMarkdown>
 			</div>
 
 			{/* Progress and Timer */}
-			<div className="border-primary-200 bg-surface flex flex-wrap items-center justify-between gap-2 rounded-lg border p-2 shadow-md sm:flex-nowrap sm:p-3">
+			<div className="border-primary-200 bg-surface flex flex-shrink-0 flex-wrap items-center justify-between gap-1 rounded border p-1.5 shadow-sm sm:flex-nowrap">
 				<div className="flex-1 text-center">
 					<span className="text-text-secondary block text-xs font-medium sm:text-sm">
 						{config.progressLabel}
@@ -244,7 +248,7 @@ export const BubbleGameView: React.FC = () => {
 			</div>
 
 			{/* Game Container */}
-			<div ref={containerRef}>
+			<div ref={containerRef} className="h-full min-h-0 w-full flex-1">
 				<GameContainer
 					width={containerSize.width}
 					height={containerSize.height}

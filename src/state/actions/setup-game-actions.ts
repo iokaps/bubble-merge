@@ -19,12 +19,16 @@ export const setupGameActions = {
 	/**
 	 * Create puzzle from manual input
 	 */
-	async createPuzzleManual(input: ManualPuzzleInput) {
+	async createPuzzleManual(input: ManualPuzzleInput, totalRounds = 5) {
 		const { targetCategory, correctBubbles, incorrectBubbles } = input;
 
 		// Validate input
 		if (!targetCategory.trim()) {
 			throw new Error('Target category is required');
+		}
+
+		if (totalRounds < 1 || totalRounds > 10) {
+			throw new Error('Total rounds must be between 1 and 10');
 		}
 
 		const allBubbles = [...correctBubbles, ...incorrectBubbles];
@@ -67,6 +71,8 @@ export const setupGameActions = {
 			state.bubbles = bubbles;
 			state.gamePhase = 'setup';
 			state.currentRound = 0;
+			state.totalRounds = totalRounds;
+			state.allRoundsPuzzles = []; // Clear AI puzzles for manual mode
 		});
 	},
 

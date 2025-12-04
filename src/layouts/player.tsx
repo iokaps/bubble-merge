@@ -21,12 +21,12 @@ const PlayerRoot: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerHeader: React.FC<LayoutProps> = ({ children, className }) => (
 	<header
 		className={cn(
-			'bg-surface border-border sticky top-0 z-10 border-b py-2 shadow-sm',
+			'bg-surface/80 sticky top-0 z-10 py-1 backdrop-blur-sm',
 			className
 		)}
 	>
-		<div className="container mx-auto flex flex-wrap items-center justify-between px-3">
-			<div className="text-sm font-bold">{config.title}</div>
+		<div className="container mx-auto flex items-center justify-between px-2">
+			<div className="text-xs font-bold opacity-70">{config.title}</div>
 
 			{children}
 		</div>
@@ -36,7 +36,7 @@ const PlayerHeader: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerMain: React.FC<LayoutProps> = ({ children, className }) => (
 	<main
 		className={cn(
-			'scrollable container mx-auto flex items-center justify-center overflow-y-auto p-2 sm:p-3',
+			'container mx-auto flex items-center justify-center overflow-hidden px-1 py-1',
 			className
 		)}
 	>
@@ -47,7 +47,7 @@ const PlayerMain: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerFooter: React.FC<LayoutProps> = ({ children, className }) => (
 	<footer
 		className={cn(
-			'bg-surface border-border sticky bottom-0 z-10 border-t p-2',
+			'bg-surface/80 sticky bottom-0 z-10 px-2 py-1 backdrop-blur-sm',
 			className
 		)}
 	>

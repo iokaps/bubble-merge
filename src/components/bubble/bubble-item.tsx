@@ -49,7 +49,7 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 				zIndex: isDragging ? 10 : 2
 			}}
 			onDragStart={() => setIsDragging(true)}
-			onDragEnd={(event, info) => {
+			onDragEnd={(_event, info) => {
 				setIsDragging(false);
 
 				// Get the container element to calculate relative position

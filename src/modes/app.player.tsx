@@ -75,5 +75,4 @@ const App: React.FC = () => {
 		</KmConfettiProvider>
 	);
 };
-
 export default App;

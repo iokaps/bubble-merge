@@ -106,12 +106,7 @@ export const schema = z.object({
 	// Visual parameters
 	bubbleRadius: z.number().default(40),
 	targetBubbleRadius: z.number().default(90),
-	bubbleSpacing: z.number().default(150),
-
-	// Audio
-	correctPopVolume: z.number().default(0.6),
-	incorrectBounceVolume: z.number().default(0.4),
-	levelCompleteVolume: z.number().default(0.8)
+	bubbleSpacing: z.number().default(150)
 });
 
 export type Config = z.infer<typeof schema>;

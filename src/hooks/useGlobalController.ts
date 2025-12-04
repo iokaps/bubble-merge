@@ -46,14 +46,23 @@ export function useGlobalController() {
 	useEffect(() => {
 		if (!isGlobalController) return;
 
-		// Reset trigger when entering countdown or playing phase
-		if (gamePhase === 'countdown' || gamePhase === 'playing') {
-			console.log(
-				`[Controller] Phase changed to ${gamePhase}, resetting countdown trigger (was: ${countdownTriggeredRef.current})`
-			);
+		// Reset trigger ONLY when entering countdown phase with a new countdownStartTime
+		// Don't reset when entering playing phase or when already in countdown
+		if (gamePhase === 'countdown') {
+			// Only reset if we have a fresh countdown (within last second)
+			const timeSinceCountdownStart = serverTime - countdownStartTime;
+			if (timeSinceCountdownStart < 1000) {
+				console.log(`[Controller] Fresh countdown detected, resetting trigger`);
+				countdownTriggeredRef.current = false;
+			}
+		}
+
+		// Always reset when entering playing phase (new round started)
+		if (gamePhase === 'playing') {
+			console.log(`[Controller] Playing phase - resetting countdown trigger`);
 			countdownTriggeredRef.current = false;
 		}
-	}, [isGlobalController, gamePhase]);
+	}, [isGlobalController, gamePhase, countdownStartTime, serverTime]);
 
 	// Run global controller-specific logic
 	useEffect(() => {
@@ -122,23 +131,25 @@ export function useGlobalController() {
 				countdownStartTime
 			);
 
-			if (
-				countdownElapsed >= countdownDuration &&
-				!countdownTriggeredRef.current
-			) {
-				console.log('[Controller] Countdown complete - starting next round');
-				// Auto-start next round
-				countdownTriggeredRef.current = true;
-				setupGameActions
-					.startRound()
-					.then(() => {
-						console.log('[Controller] Next round started successfully');
-					})
-					.catch((err) => {
-						console.error('[Controller] Error starting next round:', err);
-						// Reset trigger on error to allow retry
-						countdownTriggeredRef.current = false;
-					});
+			// Start next round if countdown has elapsed
+			// Check both the ref AND if enough time has passed (handles tab switching)
+			if (countdownElapsed >= countdownDuration) {
+				// Only trigger if ref says we haven't triggered yet
+				// This prevents double-triggering from same controller
+				if (!countdownTriggeredRef.current) {
+					console.log('[Controller] Countdown complete - starting next round');
+					countdownTriggeredRef.current = true;
+					setupGameActions
+						.startRound()
+						.then(() => {
+							console.log('[Controller] Next round started successfully');
+						})
+						.catch((err) => {
+							console.error('[Controller] Error starting next round:', err);
+							// Reset trigger on error to allow retry
+							countdownTriggeredRef.current = false;
+						});
+				}
 			}
 		}
 	}, [

@@ -2,23 +2,38 @@ import { config } from '@/config';
 import { kmClient } from '@/services/km-client';
 import { setupGameActions } from '@/state/actions/setup-game-actions';
 import { globalStore } from '@/state/stores/global-store';
-import { KmTimeCountdown } from '@kokimoki/shared';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSnapshot } from 'valtio';
 
 export const RoundResultsView: React.FC = () => {
-	const { roundWinners, currentRound, playerProgress, players } = useSnapshot(
-		globalStore.proxy
-	);
+	const { roundWinners, players } = useSnapshot(globalStore.proxy);
 	const isHost = kmClient.clientContext.mode === 'host';
 
-	// Get all players sorted by score
-	const allPlayers = Object.entries(playerProgress || {})
-		.map(([clientId, progress]) => ({
+	// Aggregate scores from all rounds using roundWinners
+	const playerTotalScores = new Map<
+		string,
+		{ name: string; totalScore: number }
+	>();
+
+	roundWinners.forEach((winner) => {
+		const existing = playerTotalScores.get(winner.clientId);
+		if (existing) {
+			existing.totalScore += winner.score;
+		} else {
+			playerTotalScores.set(winner.clientId, {
+				name: winner.playerName,
+				totalScore: winner.score
+			});
+		}
+	});
+
+	// Convert to array and sort by total score
+	const allPlayers = Array.from(playerTotalScores.entries())
+		.map(([clientId, data]) => ({
 			clientId,
-			name: players[clientId]?.name || 'Unknown',
-			...progress
+			name: data.name,
+			score: data.totalScore
 		}))
 		.sort((a, b) => b.score - a.score);
 
@@ -128,18 +143,6 @@ export const RoundResultsView: React.FC = () => {
 										<span className="text-text-primary font-semibold">
 											{result.score}
 										</span>
-									</span>
-									<span>
-										{config.absorbedLabel}: {result.absorbedCount}
-									</span>
-									<span>
-										{config.accuracyLabel}: {Math.round(result.accuracy * 100)}%
-									</span>
-									<span>
-										<KmTimeCountdown
-											ms={result.completionTime || 0}
-											display="ms"
-										/>
 									</span>
 								</div>
 							</div>

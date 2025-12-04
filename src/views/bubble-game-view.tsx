@@ -6,12 +6,6 @@ import { useServerTimer } from '@/hooks/useServerTime';
 import { kmClient } from '@/services/km-client';
 import { bubbleGameActions } from '@/state/actions/bubble-game-actions';
 import { globalStore } from '@/state/stores/global-store';
-import {
-	playBounceSound,
-	playPopSound,
-	playVictorySound,
-	resumeAudioContext
-} from '@/utils/synth-audio';
 import { KmTimeCountdown, useKmConfettiContext } from '@kokimoki/shared';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -77,9 +71,6 @@ export const BubbleGameView: React.FC = () => {
 		// Don't allow dropping if time is up
 		if (!isDraggingAllowed) return;
 
-		// Resume audio context on first interaction (iOS/Safari requirement)
-		await resumeAudioContext();
-
 		// Calculate distance from center
 		const centerX = containerSize.width / 2;
 		const centerY = containerSize.height / 2;
@@ -92,8 +83,6 @@ export const BubbleGameView: React.FC = () => {
 			// Correct bubble on target - absorb it!
 			setAbsorbedBubbles((prev) => new Set(prev).add(bubbleId));
 
-			playPopSound(config.correctPopVolume);
-
 			if ('vibrate' in navigator) {
 				navigator.vibrate(100);
 			}
@@ -103,7 +92,6 @@ export const BubbleGameView: React.FC = () => {
 			// Check if round complete
 			const newAbsorbedCount = (myProgress?.absorbedCount || 0) + 1;
 			if (newAbsorbedCount >= roundConfig.correctCount) {
-				playVictorySound(config.levelCompleteVolume);
 				triggerConfetti({ preset: 'massive' });
 
 				if ('vibrate' in navigator) {
@@ -113,8 +101,6 @@ export const BubbleGameView: React.FC = () => {
 		} else if (isOnTarget && !isCorrect) {
 			// Incorrect bubble on target - shake and remove
 			setShakingBubbles((prev) => new Set(prev).add(bubbleId));
-
-			playBounceSound(config.incorrectBounceVolume);
 
 			if ('vibrate' in navigator) {
 				navigator.vibrate([50, 30, 50]);

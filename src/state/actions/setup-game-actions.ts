@@ -197,14 +197,27 @@ Respond with JSON in this exact format:
 	 * Start a new round with current puzzle
 	 */
 	async startRound() {
+		console.log('[StartRound] 🚀 Starting new round...');
 		await kmClient.transact([globalStore], ([state]) => {
 			const roundNumber = state.currentRound + 1;
+			console.log('[StartRound] Current state:', {
+				currentRound: state.currentRound,
+				newRoundNumber: roundNumber,
+				totalRounds: state.totalRounds,
+				gamePhase: state.gamePhase,
+				hasPuzzles: state.allRoundsPuzzles.length > 0,
+				puzzlesCount: state.allRoundsPuzzles.length
+			});
 
 			// If we have stored puzzles, load the next round's puzzle
 			if (
 				state.allRoundsPuzzles.length > 0 &&
 				roundNumber <= state.allRoundsPuzzles.length
 			) {
+				console.log(
+					'[StartRound] ✅ Loading AI-generated puzzle for round',
+					roundNumber
+				);
 				const roundPuzzle = state.allRoundsPuzzles[roundNumber - 1];
 				const bubbles: BubbleData[] = [
 					...roundPuzzle.correctBubbles.map((label, i) => ({
@@ -263,6 +276,14 @@ Respond with JSON in this exact format:
 				incorrectCount
 			};
 
+			console.log('[StartRound] ✅ Updated state:', {
+				newCurrentRound: state.currentRound,
+				roundStartTime: state.roundStartTime,
+				gamePhase: state.gamePhase,
+				correctCount,
+				incorrectCount
+			});
+
 			// Reset player progress
 			state.playerProgress = {};
 			for (const clientId of Object.keys(state.players)) {
@@ -274,7 +295,13 @@ Respond with JSON in this exact format:
 					score: 0
 				};
 			}
+			console.log(
+				'[StartRound] ✅ Reset player progress for',
+				Object.keys(state.players).length,
+				'players'
+			);
 		});
+		console.log('[StartRound] ✅ Transaction complete - round started!');
 	},
 
 	/**

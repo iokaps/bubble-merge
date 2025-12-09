@@ -45,13 +45,13 @@ export const RoundResultsView: React.FC = () => {
 	}));
 
 	// Debug: Log podium data to verify names
-	console.log('[RoundResults] Podium data:', podiumData);
-	console.log(
-		'[RoundResults] Podium entries for KmPodiumTable:',
-		JSON.stringify(podiumData, null, 2)
-	);
-	console.log('[RoundResults] All players:', allPlayers);
-	console.log('[RoundResults] Players dict:', players);
+	// console.log('[RoundResults] Podium data:', podiumData);
+	// console.log(
+	// 	'[RoundResults] Podium entries for KmPodiumTable:',
+	// 	JSON.stringify(podiumData, null, 2)
+	// );
+	// console.log('[RoundResults] All players:', allPlayers);
+	// console.log('[RoundResults] Players dict:', players);
 
 	// Remaining players (4th place and below)
 	const otherPlayers = allPlayers.slice(3);

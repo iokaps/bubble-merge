@@ -1,3 +1,4 @@
+import { HelpButton } from '@/components/host/help-button';
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useGlobalController } from '@/hooks/useGlobalController';
@@ -40,14 +41,16 @@ const App: React.FC = () => {
 	return (
 		<HostPresenterLayout.Root>
 			<HostPresenterLayout.Header>
-				<div className="text-sm opacity-70">{config.hostLabel}</div>
-				{currentRound > 0 && (
-					<div className="text-sm font-medium">
-						{config.currentRoundLabel} {currentRound}
-					</div>
-				)}
-			</HostPresenterLayout.Header>
-
+				<div className="flex items-center gap-4">
+					<div className="text-sm opacity-70">{config.hostLabel}</div>
+					{currentRound > 0 && (
+						<div className="text-sm font-medium">
+							{config.currentRoundLabel} {currentRound}
+						</div>
+					)}
+				</div>
+				<HelpButton />
+			</HostPresenterLayout.Header>{' '}
 			<HostPresenterLayout.Main>
 				<div className="border-primary-200 bg-surface rounded-lg border shadow-md">
 					<div className="flex flex-col gap-2 p-6">

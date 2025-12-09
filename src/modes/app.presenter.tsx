@@ -91,7 +91,7 @@ const App: React.FC = () => {
 										<div className="text-lg font-bold">{player.name}</div>
 										<div className="bg-primary-100 mt-2 h-4 overflow-hidden rounded-full">
 											<div
-												className="h-full bg-gradient-to-r from-secondary-500 to-primary-500 transition-all duration-300"
+												className="from-secondary-500 to-primary-500 h-full bg-gradient-to-r transition-all duration-300"
 												style={{
 													width: `${(player.absorbedCount / roundConfig.correctCount) * 100}%`
 												}}

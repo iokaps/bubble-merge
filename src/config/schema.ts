@@ -31,6 +31,88 @@ export const schema = z.object({
 
 	menuAriaLabel: z.string().default('Open menu drawer'),
 
+	// Help content
+	helpButtonLabel: z.string().default('Help'),
+	helpTitle: z.string().default('How to Play Bubble Merge'),
+	helpContentMd: z.string().default(
+		`# Game Overview
+
+Bubble Merge is a fast-paced categorization game where players race to identify and merge correct bubbles into a target category.
+
+## Setup
+
+### 1. Choose Your Mode
+
+**Manual Entry:**
+- Enter a target category (e.g., "Breaking Bad Characters")
+- Add correct bubbles (items that belong to the category)
+- Add incorrect bubbles (distractors that don't belong)
+- Set the number of rounds (1-10)
+
+**AI Generated:**
+- Enter a theme or topic (e.g., "Breaking Bad", "Planets", "React Hooks")
+- Set the number of rounds
+- AI will generate unique puzzles for each round with increasing difficulty
+
+### 2. Share the Game
+
+- Share the **Player Link** or QR code with participants
+- Open the **Presenter Link** on a TV/projector for spectators
+- Players join on their mobile devices
+
+### 3. Start the Game
+
+Once you've created a puzzle and players have joined, click **Start Round** to begin!
+
+## Gameplay
+
+### For Players:
+
+1. **Objective:** Drag and drop the correct bubbles to the center target bubble
+2. **Scoring:**
+   - ✅ Correct bubble = +100 points
+   - ❌ Wrong bubble = -50 points penalty
+3. **Time Limit:** Each round has a 30-second timer
+4. **Competition:** First to absorb all correct bubbles wins the round!
+
+### For Host:
+
+- Monitor player progress in real-time
+- View connections and player names
+- Click **New Game** to reset and start over
+
+## Round Progression
+
+- After each round, there's a 3-second countdown
+- The next round starts automatically
+- In AI mode, each round has a new puzzle
+- In manual mode, the same puzzle is shuffled
+- Final results are shown after all rounds complete
+
+## Scoring System
+
+- **Completion Time:** Faster completion = higher rank
+- **Accuracy:** Fewer mistakes = better score
+- **Absorbed Count:** Number of correct bubbles collected
+- **Score:** Calculated from correct answers minus penalties
+
+## Tips for Hosts
+
+1. **Test First:** Try the game yourself before hosting with a group
+2. **Clear Categories:** Choose categories with obvious correct/incorrect items
+3. **Appropriate Difficulty:** Start with 4 correct + 2 incorrect bubbles
+4. **Presenter Mode:** Always use presenter mode on a big screen for better engagement
+5. **Round Count:** 3-5 rounds work best for most sessions
+
+## Troubleshooting
+
+- **Players can't join?** Check if they're using the correct player link
+- **Game not progressing?** The host tab must stay open (it controls the game)
+- **Need to restart?** Click "New Game" to reset everything
+
+Have fun playing Bubble Merge! 🎮`
+	),
+
 	// Bubble Merge game strings
 	gameSetupTitle: z.string().default('Game Setup'),
 	gameSetupModeManual: z.string().default('Manual Entry'),

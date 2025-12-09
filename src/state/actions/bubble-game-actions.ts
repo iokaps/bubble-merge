@@ -41,13 +41,13 @@ export const bubbleGameActions = {
 				};
 			} else {
 				progress.absorbedCount += 1;
-				
+
 				// Calculate points based on time remaining (10 points per second)
 				const now = kmClient.serverTimestamp();
 				const elapsed = now - state.roundStartTime;
 				const remaining = Math.max(0, state.roundTimeRemaining - elapsed);
 				const timePoints = Math.ceil(remaining / 1000) * 10;
-				
+
 				progress.score += timePoints;
 
 				// Check if round is complete

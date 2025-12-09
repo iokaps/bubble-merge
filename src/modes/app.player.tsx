@@ -61,16 +61,16 @@ const App: React.FC = () => {
 		<KmConfettiProvider>
 			<PlayerLayout.Root>
 				<PlayerLayout.Header />
-
-					<PlayerLayout.Main
-						className={
-							gamePhase === 'results' ? 'items-start overflow-y-auto' : ''
-						}
-					>
-						{gamePhase === 'countdown' && <RoundCountdownView />}
-						{gamePhase === 'playing' && <BubbleGameView />}
-						{gamePhase === 'results' && <RoundResultsView />}
-					</PlayerLayout.Main>				<PlayerLayout.Footer>
+				<PlayerLayout.Main
+					className={
+						gamePhase === 'results' ? 'items-start overflow-y-auto' : ''
+					}
+				>
+					{gamePhase === 'countdown' && <RoundCountdownView />}
+					{gamePhase === 'playing' && <BubbleGameView />}
+					{gamePhase === 'results' && <RoundResultsView />}
+				</PlayerLayout.Main>{' '}
+				<PlayerLayout.Footer>
 					<NameLabel name={name} />
 				</PlayerLayout.Footer>
 			</PlayerLayout.Root>

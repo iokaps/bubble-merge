@@ -10,7 +10,7 @@ interface LayoutProps {
 const HostPresenterRoot: React.FC<LayoutProps> = ({ children, className }) => (
 	<div
 		className={cn(
-			'scrollable from-primary-50 via-background to-secondary-50 h-dvh max-h-dvh w-full overflow-y-auto bg-gradient-to-br p-4 sm:p-8',
+			'scrollable from-primary-100 via-background to-secondary-100 h-dvh max-h-dvh w-full overflow-y-auto bg-gradient-to-br p-4 sm:p-8',
 			className
 		)}
 	>

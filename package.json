@@ -1,7 +1,7 @@
 {
 	"name": "bubble-merge",
 	"private": true,
-	"version": "0.3.36",
+	"version": "0.4.0",
 	"type": "module",
 	"description": "",
 	"scripts": {
@@ -14,7 +14,9 @@
 	"dependencies": {
 		"@kokimoki/app": "^2.0.0",
 		"@kokimoki/shared": "^1.0.8",
+		"@types/matter-js": "^0.20.2",
 		"lucide-react": "^0.554.0",
+		"matter-js": "^0.20.0",
 		"motion": "^12.23.0",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",

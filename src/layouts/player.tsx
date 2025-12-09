@@ -10,7 +10,7 @@ interface LayoutProps {
 const PlayerRoot: React.FC<LayoutProps> = ({ children, className }) => (
 	<main
 		className={cn(
-			'from-primary-50 via-background to-secondary-50 grid h-dvh max-h-dvh w-full grid-rows-[auto_1fr_auto] overflow-hidden bg-gradient-to-br',
+			'from-primary-100 via-background to-secondary-100 grid h-dvh max-h-dvh w-full grid-rows-[auto_1fr_auto] overflow-hidden bg-gradient-to-br',
 			className
 		)}
 	>

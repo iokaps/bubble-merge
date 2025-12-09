@@ -17,6 +17,7 @@ export interface BubbleItemProps {
 	isAbsorbed?: boolean;
 	shouldShake?: boolean;
 	isDraggingAllowed?: boolean;
+	dragConstraints?: React.RefObject<Element | null>;
 }
 
 export const BubbleItem: React.FC<BubbleItemProps> = ({
@@ -27,7 +28,8 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 	onDrop,
 	isAbsorbed = false,
 	shouldShake = false,
-	isDraggingAllowed = true
+	isDraggingAllowed = true,
+	dragConstraints
 }) => {
 	const [isDragging, setIsDragging] = React.useState(false);
 	const containerRef = React.useRef<HTMLDivElement>(null);
@@ -36,6 +38,7 @@ export const BubbleItem: React.FC<BubbleItemProps> = ({
 		<motion.div
 			ref={containerRef}
 			drag={isDraggingAllowed}
+			dragConstraints={dragConstraints}
 			dragMomentum={false}
 			dragElastic={0.2}
 			style={{

@@ -25,17 +25,30 @@ export const bubbleGameActions = {
 			}
 
 			if (!progress) {
+				// Calculate points based on time remaining (10 points per second)
+				const now = kmClient.serverTimestamp();
+				const elapsed = now - state.roundStartTime;
+				const remaining = Math.max(0, state.roundTimeRemaining - elapsed);
+				const timePoints = Math.ceil(remaining / 1000) * 10;
+
 				// Initialize progress if not exists
 				state.playerProgress[clientId] = {
 					absorbedCount: 1,
 					incorrectAttempts: 0,
 					completionTime: null,
 					accuracy: 0,
-					score: config.correctPoints
+					score: timePoints
 				};
 			} else {
 				progress.absorbedCount += 1;
-				progress.score += config.correctPoints;
+				
+				// Calculate points based on time remaining (10 points per second)
+				const now = kmClient.serverTimestamp();
+				const elapsed = now - state.roundStartTime;
+				const remaining = Math.max(0, state.roundTimeRemaining - elapsed);
+				const timePoints = Math.ceil(remaining / 1000) * 10;
+				
+				progress.score += timePoints;
 
 				// Check if round is complete
 				const targetCount = state.roundConfig.correctCount;
